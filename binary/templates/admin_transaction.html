@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - AlpicapFX Pro</title>
+       {% load static %}
+
+    <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+
+    <!-- PNG fallback for older browsers -->
+    <!-- <link rel="icon" type="image/png" href="/favicon-32x32.png"> -->
+
+    <!-- Apple Touch Icon -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> -->
+
+    <!-- Manifest for web app -->
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    
+
+
+
+    <style>
+        /* All the CSS from the redesigned code goes here... (pasted for brevity) */
+  /* CSS Custom Properties for easier theming */
+        :root {
+            --primary-color: #00d4ff;
+            --secondary-color: #1e40af;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            --grey-color: #9ca3af;
+            --bg-dark-1: #0c1426;
+            --bg-dark-2: #0f1b2e;
+            --bg-dark-3: #1a2332;
+            --text-light: #e5e7eb;
+            --border-color: rgba(0, 212, 255, 0.15);
+            --card-bg: rgba(26, 35, 50, 0.5);
+        }
+
+        /* Base & Background Styles (Maintained from original) */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at center, var(--bg-dark-3) 0%, var(--bg-dark-2) 45%, var(--bg-dark-1) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px; background: var(--primary-color);
+            border-radius: 50%; opacity: 0.6; pointer-events: none;
+        }
+        .particle:nth-child(odd) { background: var(--secondary-color); animation: float1 8s ease-in-out infinite; }
+        .particle:nth-child(even) { animation: float2 10s ease-in-out infinite; }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10%, 90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            15%, 85% { opacity: 0.4; }
+            100% { transform: translateY(-100px) translateX(-50px); opacity: 0; }
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--grey-color);
+        }
+
+        .control-input, .control-select {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .control-input:focus, .control-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .control-select {
+            padding-left: 1rem;
+            width: auto;
+            min-width: 180px;
+        }
+
+        /* Main Content Card */
+        .transactions-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transactions-table th, .transactions-table td {
+            padding: 1rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .transactions-table thead {
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .transactions-table th {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .transactions-table tbody tr {
+            border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+            transition: background-color 0.2s;
+        }
+        .transactions-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .transactions-table tbody tr:not(.details-row):hover {
+            background-color: rgba(0, 212, 255, 0.05);
+        }
+
+        /* User Info Cell */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .user-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+        .user-details strong {
+            display: block;
+            font-weight: 500;
+        }
+        .user-details span {
+            font-size: 0.85rem;
+            color: var(--grey-color);
+        }
+
+        /* Type & Amount Cell */
+        .type-amount .amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .type-amount .type {
+            font-size: 0.85rem;
+            color: var(--grey-color);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .type-amount .type.deposit { color: var(--success-color); }
+        .type-amount .type.withdrawal { color: var(--error-color); }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-badge .icon { font-size: 1.1rem; }
+        .status-completed { background-color: rgba(16,185,129,0.1); color: var(--success-color); }
+        .status-processing { background-color: rgba(59,130,246,0.1); color: var(--info-color); }
+        .status-declined { background-color: rgba(239,68,68,0.1); color: var(--error-color); }
+        .status-voided { background-color: rgba(156,163,175,0.1); color: var(--grey-color); }
+
+        /* Details Toggle Button */
+        .details-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .details-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--bg-dark-1);
+            border-color: var(--primary-color);
+        }
+        .details-btn .arrow-icon {
+            transition: transform 0.3s;
+        }
+        .details-btn.open .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Expandable Details Row */
+        .details-row {
+            display: none; /* Hidden by default */
+        }
+        .details-row.show {
+            display: table-row;
+        }
+        .details-content {
+            background-color: rgba(0,0,0,0.2);
+            padding: 1.5rem;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .detail-item strong {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--grey-color);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        .detail-item .id-card-link {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .detail-item .id-card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* No Results Message */
+        #no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--grey-color);
+        }
+        #no-results p {
+            font-size: 1.2rem;
+        }
+
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem; }
+            .page-title { font-size: 2rem; }
+            .controls-section { flex-direction: column; }
+            .control-select { min-width: 100%; }
+            .transactions-card { padding: 1rem 0; }
+            .transactions-table thead { display: none; }
+            .transactions-table tr, .transactions-table td { display: block; }
+            .transactions-table tr:not(.details-row) {
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+            .transactions-table td {
+                padding: 0.5rem 0;
+                border: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .transactions-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--primary-color);
+            }
+            .transactions-table tr:not(.details-row) td:nth-child(5) {
+                justify-content: flex-end; /* Align button to the right */
+            }
+            .transactions-table tr:not(.details-row) td:nth-child(5)::before {
+                content: ''; /* Hide label for button cell */
+            }
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+
+    
+</head>
+<body>
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <main class="main-container">
+        <header class="page-header">
+            <h1 class="page-title">Transaction History</h1>
+        </header>
+
+        <form method="GET" action="{% url 'transaction_list' %}">
+            <section class="controls-section">
+                <div class="search-wrapper">
+                    <span class="material-symbols-outlined search-icon">search</span>
+                    <input type="text" name="q" class="control-input" placeholder="Search by name, email, or method..." value="{{ search_query }}">
+                </div>
+                <select name="status" class="control-select" onchange="this.form.submit()">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Statuses</option>
+                    <option value="Completed" {% if status_filter == 'Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Processing" {% if status_filter == 'Processing' %}selected{% endif %}>Processing</option>
+                    <option value="Declined" {% if status_filter == 'Declined' %}selected{% endif %}>Declined</option>
+                    <option value="Voided" {% if status_filter == 'Voided' %}selected{% endif %}>Voided</option>
+                </select>
+                <button type="submit" class="details-btn" style="padding: 0.75rem 1rem;">Filter</button>
+            </section>
+        </form>
+
+        <section class="transactions-card">
+            <div class="table-container">
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Type & Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionTableBody">
+                        {% for tx in transactions %}
+                        <tr>
+                            <td data-label="User">
+                                <div class="user-info">
+                                    <div class="user-avatar">{{ tx.user.first_name|slice:":1" }}{{ tx.user.last_name|slice:":1" }}</div>
+                                    <div class="user-details">
+                                        <strong>{{ tx.user.first_name }} {{ tx.user.last_name }}</strong>
+                                        <span>{{ tx.user.email }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td data-label="Amount">
+                                <div class="type-amount">
+                                    <span class="amount">${{ tx.amount }}</span>
+                                    <span class="type {% if tx.transaction_type == 'Deposit' %}deposit{% else %}withdrawal{% endif %}">
+                                        <span class="material-symbols-outlined">{% if tx.transaction_type == 'Deposit' %}add_card{% else %}credit_card{% endif %}</span>
+                                        {{ tx.transaction_type }} via {{ tx.method }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td data-label="Status">
+                                {% with status_class=tx.status|lower|cut:" " %}
+                                <span class="status-badge status-{{ status_class }}">
+                                    <span class="material-symbols-outlined icon">
+                                        {% if tx.status == 'Completed' %}check_circle{% elif tx.status == 'Processing' %}sync{% elif tx.status == 'Declined' %}cancel{% else %}do_not_disturb_on{% endif %}
+                                    </span>
+                                    {{ tx.status }}
+                                </span>
+                                {% endwith %}
+                            </td>
+                            <td data-label="Date">{{ tx.date|date:"M d, Y" }}</td>
+                            <td>
+                                <button class="details-btn" data-index="{{ forloop.counter0 }}">
+                                    Details
+                                    <span class="material-symbols-outlined arrow-icon">expand_more</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="details-row" id="details-{{ forloop.counter0 }}">
+                            <td colspan="5">
+                                <div class="details-content">
+                                    <div class="details-grid">
+                                        <div class="detail-item"><strong>Recipient</strong><span>{{ tx.recipient_name|default:"N/A" }}</span></div>
+                                        <div class="detail-item"><strong>Account No.</strong><span>{{ tx.account_no|default:"N/A" }}</span></div>
+                                        <div class="detail-item"><strong>Phone</strong><span>{{ tx.phone|default:"N/A" }}</span></div>
+                                        <div class="detail-item"><strong>Email</strong><span>{{ tx.email|default:"N/A" }}</span></div>
+                                        <div class="detail-item">
+                                            <strong>ID Card (Front)</strong>
+                                            <span>
+                                                {% if tx.front_id_card %}
+                                                    <a href="{{ tx.front_id_card.url }}" class="id-card-link" target="_blank">View Document</a>
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <strong>ID Card (Back)</strong>
+                                            <span>
+                                                {% if tx.back_id_card %}
+                                                    <a href="{{ tx.back_id_card.url }}" class="id-card-link" target="_blank">View Document</a>
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">
+                                <div id="no-results">
+                                    <p>No transactions found.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // NOTE: The static data array and renderTable function have been removed.
+        // We only keep the event listener for the details toggle button.
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('transactionTableBody');
+            
+            tableBody.addEventListener('click', (e) => {
+                const btn = e.target.closest('.details-btn');
+                if (btn) {
+                    const index = btn.dataset.index;
+                    const detailsRow = document.getElementById(`details-${index}`);
+                    btn.classList.toggle('open');
+                    detailsRow.classList.toggle('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

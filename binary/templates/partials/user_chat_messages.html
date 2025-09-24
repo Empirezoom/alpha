@@ -1,0 +1,16 @@
+  {% for msg in messages %}
+        <div class="message {% if msg.sender == 'user' %}user{% else %}admin{% endif %}">
+            <b>{% if msg.sender == 'user' %}You{% elif msg.sender == 'admin' %} Admin {% else %} Quick Message {% endif %}:</b>
+            {% if msg.message %}{{ msg.message }}<br>{% endif %}
+            {% if msg.file %}
+                {% if msg.is_image %}
+                    <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+                {% else %}
+                    <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+                {% endif %}
+            {% endif %}
+            <small style="color: blanchedalmond;font-weight: 600;">⏱&nbsp;{{ msg.timestamp|date:"m-d-y H:i" }}</small>
+        </div>
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}    

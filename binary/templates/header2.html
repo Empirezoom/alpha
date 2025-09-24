@@ -1,0 +1,37 @@
+
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+           {{t_site.logo|safe}}
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#trading">Trading</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="#support">Support</a></li>
+            <li><a href="login.html">Login</a></li> </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <div class="hamburger"></div>
+        </button>
+            {% comment %} <a href="#" class="cta-button" id="headerProfileBtn">My Profile</a>  {% endcomment %}
+             <a href="/login/" class="logout-btn" onclick="logout()">Logout</a>
+    </nav>
+    
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="#trading">Trading</a>
+            <a href="#features">Features</a>
+            <a href="#education">Education</a>
+            <a href="#support">Support</a>
+            <a href="login.html">Login</a>
+            {% comment %} <a href="#" class="cta-button" id="mobileProfileBtn">My Profile</a> {% endcomment %}
+             <a href="/login/" class="logout-btn" onclick="logout()">Logout</a>
+        </div>
+    </div>
+</header>

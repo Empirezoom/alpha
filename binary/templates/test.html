@@ -1,0 +1,401 @@
+{% extends 'base_d.html' %}
+{% load static %}
+{% comment %} {% block header %} {% include 'header2.html' %} {% endblock header %} {% endcomment %}
+
+
+{% block content %}
+
+
+   <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                AlphaTrade Pro
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#trading">Trading</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="education.html">Education</a></li>
+                <li><a href="#support">Support</a></li>
+                <li><a href="login.html">Login</a></li> </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <div class="hamburger"></div>
+            </button>
+             <a href="#" class="cta-button" id="headerProfileBtn">My Profile</a>
+        </nav>
+        
+        <div class="mobile-nav-overlay" id="mobileNavOverlay">
+            <div class="mobile-nav-links">
+                <a href="index.html">Home</a>
+                <a href="#trading">Trading</a>
+                <a href="#features">Features</a>
+                <a href="#education">Education</a>
+                <a href="#support">Support</a>
+                <a href="login.html">Login</a>
+                <a href="#" class="cta-button" id="mobileProfileBtn">My Profile</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="top-buttons">
+            <button class="cta-button" id="requestDepositBtn">Request Deposit</button>
+            <button class="cta-button" id="requestWithdrawalBtn">Request Withdrawal</button>
+            <button class="cta-button" id="liveChatBtn">Live Chat</button>
+            <button class="cta-button" id="notificationsBtn">Notifications</button>
+        </div>
+
+        <section class="dashboard-section user-profile-card">
+            <h2>User Profile</h2>
+            <div class="profile-info">
+                <p>User ID: <strong>ATP-001234</strong></p>
+                <p>Name: <strong>John Doe</strong></p>
+                <p>Email: <strong>john.doe@example.com</strong></p>
+                <p>Current Balance: <strong>$12,500.75</strong></p>
+            </div>
+            <button class="cta-button" id="viewProfileModalBtn">View Full Profile</button>
+        </section>
+
+        <section class="dashboard-section place-trade-section">
+            <h2>Place New Trade</h2>
+            <div class="asset-selection">
+                <button class="asset-button active" data-asset-type="forex">Forex</button>
+                <button class="asset-button" data-asset-type="crypto">Crypto</button>
+                <button class="asset-button" data-asset-type="stocks">Stocks</button>
+                <button class="asset-button" data-asset-type="commodities">Commodities</button>
+            </div>
+
+            <div class="asset-items" id="assetItemsContainer">
+                </div>
+
+            <div class="investment-section">
+                <label for="investmentAmount">Investment Amount ($)</label>
+                <div class="investment-input-group">
+                    <input type="number" id="investmentAmount" class="investment-input" placeholder="Enter amount" value="100" min="10">
+                </div>
+                <div class="amount-buttons">
+                    <button class="amount-button" data-amount="20">$20</button>
+                    <button class="amount-button" data-amount="50">$50</button>
+                    <button class="amount-button active" data-amount="100">$100</button>
+                    <button class="amount-button" data-amount="250">$250</button>
+                    <button class="amount-button" data-amount="500">$500</button>
+                    <button class="amount-button" data-amount="1000">$1000</button>
+                </div>
+            </div>
+
+            <div class="expiry-section">
+                <label>Expiry Time (minutes)</label>
+                <div class="amount-buttons expiry-buttons">
+                    <button class="expiry-button active" data-expiry="1">1 Min</button>
+                    <button class="expiry-button" data-expiry="5">5 Mins</button>
+                    <button class="expiry-button" data-expiry="15">15 Mins</button>
+                    <button class="expiry-button" data-expiry="30">30 Mins</button>
+                    <button class="expiry-button" data-expiry="60">60 Mins</button>
+                </div>
+            </div>
+
+            <div class="trade-buttons">
+                <button class="call-button" id="callButton">CALL (Up)</button>
+                <button class="put-button" id="putButton">PUT (Down)</button>
+            </div>
+        </section>
+
+        <section class="dashboard-section active-trade-section">
+            <h2>Active Trades</h2>
+            <div style="overflow-x: auto;">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Time Left</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activeTradesTableBody">
+                        <tr>
+                            <td>EUR/USD</td>
+                            <td>Call</td>
+                            <td>$100</td>
+                            <td class="status-active">Active</td>
+                            <td>00:45</td>
+                        </tr>
+                        <tr>
+                            <td>BTC/USD</td>
+                            <td>Put</td>
+                            <td>$50</td>
+                            <td class="status-active">Active</td>
+                            <td>02:10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="text-align: center; color: rgba(255,255,255,0.6); margin-top: 1rem;">Trades update in real-time.</p>
+        </section>
+
+        <section class="dashboard-section trading-history-section">
+            <h2>Trading History</h2>
+            <div style="overflow-x: auto;">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Asset</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Result</th>
+                            <th>Profit/Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tradingHistoryTableBody">
+                        <tr>
+                            <td>2025-06-19 14:30</td>
+                            <td>GBP/JPY</td>
+                            <td>Call</td>
+                            <td>$200</td>
+                            <td class="status-won">Won</td>
+                            <td style="color: #10b981;">+$180.00</td>
+                        </tr>
+                        <tr>
+                            <td>2025-06-19 10:15</td>
+                            <td>Gold</td>
+                            <td>Put</td>
+                            <td>$50</td>
+                            <td class="status-lost">Lost</td>
+                            <td style="color: #ef4444;">-$50.00</td>
+                        </tr>
+                        <tr>
+                            <td>2025-06-18 09:00</td>
+                            <td>AAPL</td>
+                            <td>Call</td>
+                            <td>$150</td>
+                            <td class="status-won">Won</td>
+                            <td style="color: #10b981;">+$127.50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="dashboard-section transaction-history-section">
+            <h2>Transaction History</h2>
+            <div style="overflow-x: auto;">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionHistoryTableBody">
+                        <tr>
+                            <td>2025-06-20 08:00</td>
+                            <td>Deposit</td>
+                            <td>$1000</td>
+                            <td>Bank Transfer</td>
+                            <td class="status-won">Completed</td>
+                        </tr>
+                        <tr>
+                            <td>2025-06-15 16:30</td>
+                            <td>Withdrawal</td>
+                            <td>$500</td>
+                            <td>Crypto</td>
+                            <td class="status-pending">Processing</td>
+                        </tr>
+                        <tr>
+                            <td>2025-06-10 11:00</td>
+                            <td>Deposit</td>
+                            <td>$200</td>
+                            <td>Credit Card</td>
+                            <td class="status-won">Completed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Trading</h4>
+                <a href="#">Binary Options</a>
+                <a href="#">Forex</a>
+                <a href="#">Cryptocurrencies</a>
+                <a href="#">Commodities</a>
+                <a href="#">Indices</a>
+            </div>
+            <div class="footer-section">
+                <h4>Platform</h4>
+                <a href="#">Web Trader</a>
+                <a href="#">Mobile App</a>
+                <a href="#">Desktop App</a>
+                <a href="#">API Documentation</a>
+            </div>
+            <div class="footer-section">
+                <h4>Education</h4>
+                <a href="#">Trading Academy</a>
+                <a href="#">Market Analysis</a>
+                <a href="#">Video Tutorials</a>
+                <a href="#">Webinars</a>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Live Chat</a>
+                <a href="#">Account Manager</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AlphaTrade Pro. All rights reserved. Trading involves risk and may not be suitable for all investors.</p>
+        </div>
+    </footer>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>My Profile</h3>
+            <div class="modal-body">
+                <p>User ID: <strong><span id="modalUserId">ATP-001234</span></strong></p>
+                <p>First Name: <strong><span id="modalFirstName">John</span></strong></p>
+                <p>Last Name: <strong><span id="modalLastName">Doe</span></strong></p>
+                <p>Email Address: <strong><span id="modalEmail">john.doe@example.com</span></strong></p>
+                <p>Current Balance: <strong><span id="modalCurrentBalance">$12,500.75</span></strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>Request Deposit</h3>
+            <div class="modal-body">
+                <div class="modal-form-group">
+                    <label for="depositAmount">Amount ($)</label>
+                    <input type="number" id="depositAmount" class="modal-input" placeholder="Enter amount" min="10">
+                </div>
+                <div class="modal-form-group">
+                    <label for="depositMethod">Payment Method</label>
+                    <select id="depositMethod" class="modal-select">
+                        <option value="">Select Method</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Crypto (USDT)">Crypto (USDT)</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+                <button class="cta-button" id="submitDepositRequest">Submit Deposit Request</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdrawalModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>Request Withdrawal</h3>
+            <div class="modal-body">
+                <div class="modal-form-group">
+                    <label for="withdrawalAmount">Amount ($)</label>
+                    <input type="number" id="withdrawalAmount" class="modal-input" placeholder="Enter amount" min="10">
+                </div>
+                <div class="modal-form-group">
+                    <label for="withdrawalMethod">Withdrawal Method</label>
+                    <select id="withdrawalMethod" class="modal-select">
+                        <option value="">Select Method</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Crypto (BTC)">Crypto (BTC)</option>
+                        <option value="Crypto (ETH)">Crypto (ETH)</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+                <div class="modal-form-group">
+                    <label for="recipientName">Recipient Name (Bank/Wallet)</label>
+                    <input type="text" id="recipientName" class="modal-input" placeholder="e.g. Your Bank Account Name / Wallet Type">
+                </div>
+                <div class="modal-form-group">
+                    <label for="accountNumber">Account No. / Wallet Address / Tag</label>
+                    <input type="text" id="accountNumber" class="modal-input" placeholder="e.g. 1234567890 / 0xABC... / MyTag">
+                </div>
+                <div class="modal-form-group">
+                    <label for="withdrawalPhone">Phone Number</label>
+                    <input type="tel" id="withdrawalPhone" class="modal-input" placeholder="e.g. +1234567890">
+                </div>
+                <div class="modal-form-group">
+                    <label for="withdrawalEmail">Email Address</label>
+                    <input type="email" id="withdrawalEmail" class="modal-input" placeholder="your.email@example.com">
+                </div>
+                <div class="file-upload-wrapper">
+                    <label for="frontIdUpload" class="file-upload-label">
+                        Upload Front ID Card <span class="file-name" id="frontIdFileName"></span>
+                        <input type="file" id="frontIdUpload" accept="image/*,.pdf">
+                    </label>
+                    <label for="backIdUpload" class="file-upload-label">
+                        Upload Back ID Card <span class="file-name" id="backIdFileName"></span>
+                        <input type="file" id="backIdUpload" accept="image/*,.pdf">
+                    </label>
+                </div>
+                <button class="cta-button" id="submitWithdrawalRequest">Submit Withdrawal Request</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="liveChatModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>Live Chat with Admin</h3>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message admin">Hello! How can I assist you today?</div>
+            </div>
+            <div class="admin-typing" id="adminTypingStatus">Admin is typing...</div>
+            <div class="chat-input-group">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Type your message...">
+                <label for="fileUpload" class="attach-button" title="Attach File">📎</label>
+                <input type="file" id="fileUpload" style="display: none;">
+                <button class="send-button" id="sendMessageBtn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>Notifications</h3>
+            <div class="notification-list" id="notificationList">
+                <div class="notification-item success">
+                    Trade Won! You made a profit of +$180.00 on GBP/JPY.
+                    <span class="time">Just now</span>
+                </div>
+                 <div class="notification-item info">
+                    Login Successful from a new device (192.168.1.10).
+                    <span class="time">5 minutes ago</span>
+                </div>
+                 <div class="notification-item warning">
+                    Pending Withdrawal: Your request for $500 is processing.
+                    <span class="time">1 hour ago</span>
+                </div>
+                <div class="notification-item error">
+                    Trade Loss: Your trade on Gold expired out of the money.
+                    <span class="time">3 hours ago</span>
+                </div>
+                <div class="notification-item success">
+                    Deposit Successful! $1000 has been credited to your account.
+                    <span class="time">Yesterday</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+    
+{% endblock content %}
+    
+{% comment %} {% block footer %} {% include 'footer.html' %} {% endblock footer %} {% endcomment %}

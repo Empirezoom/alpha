@@ -1,0 +1,156 @@
+{% extends 'base_r.html' %}
+{% load static %}
+{% comment %} {% block header %} {% include 'header1.html' %} {% endblock header %} {% endcomment %}
+
+{% block content %}
+
+    <!-- Floating Elements -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+             Signup
+            </div>
+            <ul class="nav-links">
+                
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'education' %}">Education</a></li>
+            <li><a href="{% url 'support' %}">Support</a></li>
+                
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <div class="hamburger"></div>
+            </button>
+            <a href="/login/" class="cta-button">Sign In</a>
+        </nav>
+        
+        <!-- Mobile Navigation Overlay -->
+        <div class="mobile-nav-overlay" id="mobileNavOverlay">
+            <div class="mobile-nav-links">
+                <a href="index.html">Home</a>
+                <a href="#trading">Trading</a>
+                <a href="#features">Features</a>
+                <a href="#education">Education</a>
+                <a href="#support">Support</a>
+                <a href="/login/" class="cta-button">Sign In</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Moving Advertisement Banner -->
+    <div class="promo-banner">
+        <div class="promo-text">
+            🎉 Get FREE $5 Trading Bonus After Signup! No Deposit Required • Start Trading Immediately • Limited Time Offer • Join Thousands of Successful Traders 💰
+        </div>
+    </div>
+
+
+
+
+
+
+ <!-- Signup Section -->
+    <section class="signup-container">
+        <div class="signup-card">
+            <div class="signup-icon">🚀</div>
+            <h1 class="signup-title">Create Account</h1>
+            <p class="signup-subtitle">Join thousands of successful traders today</p>
+            
+            <form id="registerForm" method="post" style="margin-top: 2rem;">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="form-input" placeholder="Enter first name" required>
+                        <div class="error-message" id="firstNameError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Enter last name" required>
+                        <div class="error-message" id="lastNameError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="No spacing E.g +1551123456" required>
+                    <div class="error-message" id="phoneError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+                
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+            
+                </div>
+                {% comment %} <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Create a strong password" required>
+                    <div class="error-message" id="passwordError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    <div class="error-message" id="confirmPasswordError" style="display:none;color:#ef4444;font-size:0.85rem;"></div>
+                </div> {% endcomment %}
+
+
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-input" name="password" placeholder="Create a strong password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Password strength will appear here</div>
+                    {% comment %} extra  {% endcomment %}
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword"  name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                    <div class="password-match" id="passwordMatch">✓ Passwords match</div>
+                    <div class="password-mismatch" id="passwordMismatch">✗ Passwords do not match</div>
+                    {% comment %} extra  {% endcomment %}
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+
+                <div class="terms-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.
+                    </label>
+                </div>
+                <div class="terms-group">
+                    <input type="checkbox" id="marketing" name="marketing">
+                    <label for="marketing">
+                        I want to receive trading insights and market updates via email
+                    </label>
+                </div>
+                <button type="submit" class="signup-button" id="submitBtn">Create Account & Get $5 Bonus</button>
+                <div class="success-message" id="successMessage" style="display:none;color:#10b981;font-size:0.95rem;margin-top:1rem;"></div>
+                <div class="error-message" id="generalError" style="display:none;color:#ef4444;font-size:0.95rem;margin-top:1rem;"></div>
+                
+            </form> 
+            <p class="login-link" style="margin-top:1.5rem;">
+                Already have an account? <a href="/login/">Sign In</a>
+            </p> 
+
+        </div>
+    </section>
+
+
+
+{% comment %} <div class="register-container">
+</div> {% endcomment %}
+ 
+    
+{% endblock content %}
+    
+{% block footer %} {% include 'footer.html' %} {% endblock footer %}

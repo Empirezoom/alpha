@@ -1,0 +1,486 @@
+{% extends 'base_d.html' %}
+{% load static %}
+{% load humanize %}
+{% comment %} {% block header %} {% include 'header2.html' %} {% endblock header %} {% endcomment %}
+
+
+{% block content %}
+
+
+   <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                {{t_site.logo|safe}}
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'homepage' %}">Home</a></li>
+                
+                
+                <li><a href="{% url 'education' %}">Education</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <div class="hamburger"></div>
+            </button>
+             <a href="#" class="cta-button" id="headerProfileBtn"> <i class="fas fa-user"></i></a>
+                 <a href="/login/" class="logout-btn cta-button" onclick="logout()">➜]</a>
+
+        </nav>
+        
+        <div class="mobile-nav-overlay" id="mobileNavOverlay">
+            <div class="mobile-nav-links">
+                <a href="{% url 'homepage' %}">Home</a>     
+                <a href="{% url 'education' %}">Education</a>
+                <a href="{% url 'support' %}">Support</a>
+                
+                <a href="#" class="cta-button" id="mobileProfileBtn">My Profile</a>
+                 <a href="/login/" class="logout-btn cta-button" onclick="logout()">Logout</a>
+
+            </div>
+        </div>
+    </header>
+
+  
+
+
+    <main class="dashboard-container">
+
+
+
+
+
+
+<div class="top-buttons floating-icons">
+  <button class="floating-action-btn" title="Deposit Request" onclick="openModal('depositModal')">
+    <i class="fas fa-wallet"></i>
+  </button>
+  <button class="floating-action-btn" title="Withdrawal Request" onclick="openModal('withdrawalModal')">
+    <i class="fas fa-money-bill-wave"></i>
+  </button>
+  
+{% comment %} 
+<a class="floating-action-btn" id="liveChatBtn" title="Chat Admin" href="{% url 'user_chat' %}" style="position:relative; text-decoration: none;">
+    <i class="fas fa-comments"></i>
+    {% if has_unread_admin_msg %}
+      <span class="admin-reply-dot" id="adminReplyDot" class="chat-notif-dot" id="chatNotifDot" style="background: #10b981;box-shadow: 0 0 8px #10b981;"><span class="admin-dot-text">R</span></span>
+    {% else %}
+    <span class="admin-reply-dot" id="adminReplyDot"><span class="admin-dot-text">A</span></span>
+    {% endif %}
+</a>
+{% endcomment %}
+
+
+
+<a class="floating-action-btn" id="liveChatBtn" title="Chat Admin" href="{% url 'user_chat' %}" style="position:relative; text-decoration: none;">
+    <i class="fas fa-comments"></i>
+    {% comment %} <span class="admin-reply-dot" id="adminReplyDotA"><span class="admin-dot-text">A</span></span>
+    <span class="admin-reply-dot" id="adminReplyDotR" style="display:none; background: #10b981; box-shadow: 0 0 8px #10b981;"><span class="admin-dot-text">R</span></span> {% endcomment %}
+    <span class="admin-reply-dot" id="adminReplyDotA"><span class="admin-dot-text"></span></span>
+    <span class="admin-reply-dot" id="adminReplyDotR" style="display:none; background: #10b981; box-shadow: 0 0 8px #10b981;"><span class="admin-dot-text"></span></span>
+</a>
+
+
+
+
+
+
+    <button class="floating-action-btn" id="notificationsBtn" title="Messages" onclick="openNotificationModal()">
+        <i class="fas fa-bell"></i>
+        <span class="notif-dot" id="notifDot"></span>
+    </button>
+
+
+</div>
+
+
+
+        <section class="dashboard-section user-profile-card">
+
+
+            <h2>Quick Messages</h2>
+
+            <div class="  message-all  ">
+                {% if messages %}
+                {% for message in messages %}
+                
+                {% if 'success' in message.tags %}
+                    <div class="notification success" id="notif-success">
+                    <span class="icon">&#10004;</span>
+                    <span class="message">{{message}}</span>
+                    <span class="close-btn" onclick="closeNotification('notif-success')">&times;</span>
+                    </div>
+                {% elif 'error' in message.tags %}
+                    <!-- Error Notification -->
+                    <div class="notification error" id="notif-error">
+                    <span class="icon">&#9760;</span>
+                    <span class="message">{{message}}</span>
+                    <span class="close-btn" onclick="closeNotification('notif-error')">&times;</span>
+                    </div>
+                {% elif 'info' in message.tags  %}
+                <!-- Info Notification -->
+                    <div class="notification info" id="notif-info">
+                    <span class="icon">&#8505;</span>
+                    <span class="message">{{message}}.</span>
+                    <span class="close-btn" onclick="closeNotification('notif-info')">&times;</span>
+                    </div>
+                {% elif 'warning' in message.tags %} 
+                <!-- Warning Notification -->
+                    <div class="notification warning" id="notif-warning">
+                    <span class="icon">&#9888;</span>
+                    <span class="message">{{message}}</span>
+                    <span class="close-btn" onclick="closeNotification('notif-warning')">&times;</span>
+                    </div>
+                {% else %}
+                    <div class="notification " id="notif-info">
+                    <span class="icon">&#8505;</span>
+                    <span class="message">{{message}}.</span>
+                    <span class="close-btn" onclick="closeNotification('notif-info')">&times;</span>
+                    </div>
+                {% endif %}
+                
+                
+                
+                {% endfor %}
+                {% endif %} 
+
+            </div>
+
+
+            <h2>User Profile</h2>
+            <div class="profile-info">
+                <p>Name: <strong>{{ user.first_name|title}} {{ user.last_name|title}}</strong></p>
+                <p>Email: <strong>{{ user.email }}</strong></p>
+                <p>Current Balance: <strong id="modalCurrentBalance">${{ user.balance }}</strong></p>
+            </div>
+            <button class="cta-button" id="viewProfileModalBtn">View Full Profile</button>
+        </section>
+
+
+
+<!-- Place New Trade -->
+<section class="dashboard-section place-trade-section">
+    <h2>Place New Trade</h2>
+
+
+    <br>
+
+
+                <form method="post" id="tradeForm">
+                  {% csrf_token %}
+                  <!-- Add this above .asset-selection -->
+                 <div class="asset-selection-label">Select Asset Type</div>
+                  <div class="asset-selection">
+                    <button type="button" class="asset-button active" data-asset-type="forex">Forex</button>
+                    <button type="button" class="asset-button" data-asset-type="crypto">Crypto</button>
+                    <button type="button" class="asset-button" data-asset-type="stocks">Stocks</button>
+                    <button type="button" class="asset-button" data-asset-type="commodities">Commodities</button>
+                  </div>
+                  <!-- Add this above .asset-items -->
+                 <div class="asset-items-label">Choose Asset</div>
+                  <div class="asset-items" id="assetItemsContainer">
+
+                  </div>
+      
+                  <div class="investment-section">
+                      <label for="investmentAmount">Investment Amount ($)</label>
+                      <div class="investment-input-group">
+                          {% comment %} <input type="number" id="investmentAmount" class="investment-input" placeholder="Enter amount" value="100" min="10"> {% endcomment %}
+                          <input type="number" id="investmentAmount" name="amount" class="investment-input" value="100" placeholder="Enter amount" min="10">
+                      </div>
+                      <div class="amount-buttons">
+
+                            <button type="button" class="amount-button" data-amount="20">$20</button>
+                            <button type="button" class="amount-button" data-amount="50">$50</button>
+                            <button type="button" class="amount-button active" data-amount="100">$100</button>
+                            <button type="button" class="amount-button" data-amount="250">$250</button>
+                            <button type="button" class="amount-button" data-amount="500">$500</button>
+                            <button type="button" class="amount-button" data-amount="1000">$1000</button>
+
+                      </div>
+                  </div>
+      
+                  <div class="expiry-section">
+                      <label>Expiry Time (minutes)</label>
+                      <div class="amount-buttons expiry-buttons">
+                            <button type="button" class="expiry-button active" data-expiry="1">1 Min</button>
+                            <button type="button" class="expiry-button" data-expiry="5">5 Mins</button>
+                            <button type="button" class="expiry-button" data-expiry="15">15 Mins</button>
+                            <button type="button" class="expiry-button" data-expiry="30">30 Mins</button>
+                            <button type="button" class="expiry-button" data-expiry="60">60 Mins</button>
+                      </div>
+                  </div>
+                  
+                    <!-- Hidden fields to submit selected asset type, asset, expiry, and trade type -->
+                    <input type="hidden" name="asset_type" id="assetTypeInput" value="forex">
+                    <input type="hidden" name="asset" id="assetInput" value="EUR/USD">
+                    <input type="hidden" name="expiry" id="expiryInput" value="1">
+                    <input type="hidden" name="trade_type" id="tradeTypeInput" value="Call">
+
+
+                  <div class="trade-buttons">
+                        <button   class="call-button" id="callButton" onclick="document.getElementById('tradeTypeInput').value='Call'">CALL (Up)</button>
+                        <button  class="put-button" id="putButton" onclick="document.getElementById('tradeTypeInput').value='Put'">PUT (Down)</button>
+                        {% comment %} <button type="submit" class="call-button" onclick="document.getElementById('tradeTypeInput').value='Call'">CALL (Up)</button> {% endcomment %}
+                        {% comment %} <button type="submit" class="put-button" onclick="document.getElementById('tradeTypeInput').value='Put'">PUT (Down)</button> {% endcomment %}
+                  </div>
+              </form>
+</section>
+
+
+
+<!-- Active Trades -->
+<section class="dashboard-section active-trade-section">
+    <h2>Active Trades</h2>
+    <div style="overflow-x: auto;">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Opened&nbsp;At</th>
+                </tr>
+            </thead>
+            <tbody id="activeTradesTableBody">
+                {% for trade in active_trades %}
+                <tr>
+                    <td class="status-active">💱{{ trade.asset }}</td>
+                    <td>
+                    {% comment %} {{ trade.trade_type }} {% endcomment %}
+
+                    {% if trade.trade_type == 'Call' %}
+                        <span style="font-weight: bold;">📈&nbsp;{{ trade.trade_type }}</span>
+                    {% elif trade.trade_type == 'Put' %}
+                        <span style="color:font-weight: bold;">📉&nbsp;{{ trade.trade_type }}</span>
+                        {% comment %} <span style="color: #facc15;font-weight: bold;">{{ trade.trade_type }}</span> {% endcomment %}
+                    {% else %}
+                        -
+                    {% endif %}
+
+
+                    </td>
+                    <td style=" font-weight: bold; ">${{ trade.amount }}</td>
+                    <td class="status-active" style="color: #00d4ff; font-weight: 900;">⚡️{{ trade.status }}⚡️</td>
+                    <td class="status-active" style="color: #facc15; font-weight: bold;">{{ trade.opened_at|date:"Y-m-d H:i" }}</td>
+                 
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">No active trades.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+  
+
+        <!-- Trading History -->
+        <section class="dashboard-section trading-history-section">
+            <h2>Trading History</h2>
+            <div style="overflow-x: auto;">  
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Closed At</th>
+                            <th>Asset</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Result</th>
+                            <th>Profit/Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tradingHistoryTableBody">
+                        {% for trade in trading_history %}
+                        <tr>
+                            <td>{{ trade.closed_at|date:"Y-m-d H:i" }}</td>
+                            <td>📊&nbsp;{{ trade.asset }}</td>
+                            <td>{{ trade.trade_type }}</td>
+                            <td>${{ trade.amount }}</td>
+                            <td class="status-won">
+                                {% comment %} {{ trade.status }} {% endcomment %}
+
+                                {% if trade.status == 'Won' %}
+                                    <span style="color: #10b981;">🏆{{ trade.status }}</span>
+                                {% elif trade.status == 'Lost' %}
+                                    <span style="color: #ef4444;">💥{{ trade.status }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {% if trade.status == 'Won' %}
+                                    <span style="color: #10b981;">+${{ trade.profit_loss }}</span>
+                                {% elif trade.status == 'Lost' %}
+                                    <span style="color: #ef4444;">-${{ trade.profit_loss }}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                                </td> 
+                        </tr> 
+                        {% empty %}
+                        <tr><td colspan="6">No trading history.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+
+
+        <!-- Transaction History Section -->
+        <section class="dashboard-section transaction-history-section">
+        <h2>Transaction History</h2>
+        <div style="overflow-x: auto;">
+            <table class="dashboard-table">
+            <thead>
+                <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+                </tr>
+            </thead>
+         
+
+
+        <tbody>
+
+        {% for tx in transactions %}
+        <tr>
+            <td style="color: #00d4ff;">{{ tx.date|date:"Y-m-d H:i" }}</td>
+            <td>
+                 {% if tx.transaction_type == 'Deposit' %}
+                 <span class="badge badge-success" style="  font-weight: bold;"><span style="color: #10b981;">▼</span>&nbsp;{{ tx.transaction_type }}</span>
+                 {% elif tx.transaction_type == 'Withdrawal' %}
+                 <span class="badge badge-danger" style=" font-weight: bold;"><span style="color: #ef4444;">▲</span>&nbsp;{{ tx.transaction_type }}</span>
+                 {% else%}
+                 <span class="badge badge-warning" style="color: #facc15;">Unidentified</span>
+                {% endif %}
+            </td>
+            <td >
+                {% if tx.transaction_type == 'Deposit' %}
+                 <span class="badge badge-success" style=" color: #10b981; font-weight: bold;">${{ tx.amount|intcomma }}</span>
+                 {% elif tx.transaction_type == 'Withdrawal' %}
+                 <span class="badge badge-danger" style="color: #cd4d4dff; font-weight: bold;">${{ tx.amount|intcomma }}</span>
+                 {% else%}
+                 <span class="badge badge-warning" style="color: #facc15;">Unidentified</span>
+                {% endif %}
+            </td>
+            <td style="font-weight: 500;">{{ tx.method }}</td>
+            {% comment %} <td class="{% if tx.status == 'Completed' %}status-won{% elif tx.status == 'Processing' %}status-pending{% else %}status-lost{% endif %}">
+                {{ tx.status }}
+            </td> {% endcomment %}
+
+            <td>
+            {% if tx.status == 'Processing' %}
+                <span class="badge badge-warning" style="color: #facc15;">{{ tx.status }}</span>
+                {% elif tx.status == 'Completed' %}
+                <span class="badge badge-success" style=" color: #10b981; font-weight: bold;">{{ tx.status }}</span>
+                {% else %}
+                <span class="badge badge-danger" style="color: #8a3131ff; font-weight: bold;">{{ tx.status }}</span>
+            {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+
+
+
+        </tbody>
+
+
+
+            </table>
+        </div>
+        </section>
+    </main>
+
+
+
+
+
+  <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Trading</h4>
+            <a href="{% url 'dashboard' %}">Binary Options</a>
+            <a href="{% url 'dashboard' %}">Forex</a>
+            <a href="{% url 'dashboard' %}">Cryptocurrencies</a>
+            <a href="{% url 'dashboard' %}">Commodities</a>
+            <a href="{% url 'dashboard' %}">Indices</a>
+        </div>
+        <div class="footer-section">
+            <h4>Platform</h4>
+            <a href="{% url 'homepage' %}">Web Trader</a>
+            <a href="{% url 'homepage' %}">Mobile App</a>
+            <a href="{% url 'homepage' %}">Desktop App</a>
+            <a href="{% url 'homepage' %}">API Documentation</a>
+        </div>
+        <div class="footer-section">
+            <h4>Education</h4>
+            <a href="{% url 'education' %}">Trading Academy</a>
+            <a href="{% url 'education' %}">Market Analysis</a>
+            <a href="{% url 'education' %}">Video Tutorials</a>
+            <a href="{% url 'education' %}">Webinars</a>
+        </div>
+        <div class="footer-section">
+            <h4>Support</h4>
+            <a href="{% url 'support' %}">Help Center</a>
+            <a href="{% url 'support' %}">Contact Us</a>
+            <a href="{% url 'support' %}">Live Chat</a>
+            <a href="{% url 'dashboard' %}">Account Manager</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>{{t_site.copyright}}.</p>
+    </div>
+</footer>
+
+
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h3>My Profile</h3>
+                <p >User ID: <strong> {{user.user_id}} </strong></p>
+                <p >Main ID: <strong> {{user.main_id}} </strong></p>
+                <p>First Name: <strong>{{user.first_name|upper}}</strong></p>
+                <p>Last Name: <strong>{{user.last_name|title}}</strong></p>
+                <p>Email Address: <strong>{{ user.email|lower}}</strong></p>
+                <p>Current Balance: <strong id="modalCurrentBalance">${{ user.balance }}</strong></p>
+            </div>
+        </div>
+    </div>
+   
+
+     <!-- Notification Modal -->
+    <div id="notificationModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close-button" onclick="document.getElementById('notificationModal').style.display='none'">&times;</span>
+        <h3>Notifications</h3>
+         <div class="notification-list" id="notificationList">
+        {% for note in notifications reversed %}
+            <div class="notification-item {{ note.type }}">
+            {{ note.message }}
+            <span class="time">{{ note.time }}</span>
+            </div>
+        {% empty %}
+            <div style="color:gray;">No notifications yet.</div>
+        {% endfor %}
+        </div>
+    </div>
+    </div> 
+
+
+
+ 
+    
+{% endblock content %}

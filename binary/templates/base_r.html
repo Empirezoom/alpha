@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpicapFX Pro - Binary Investment Broker</title>
+    {% load static %}
+
+    <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+
+    <!-- PNG fallback for older browsers -->
+    <!-- <link rel="icon" type="image/png" href="/favicon-32x32.png"> -->
+
+    <!-- Apple Touch Icon -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> -->
+
+    <!-- Manifest for web app -->
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+
+    <link rel="stylesheet" href="{% static '' %}css/register.css"> 
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/h&f.css">  {% endcomment %}
+    
+<style>
+  
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 27, 46, 0.85); /* semi-transparent dark */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s;
+}
+
+.logo-loader img {
+  width: 80px;
+  height: 80px;
+  animation:
+    pulse 0.8s infinite,
+    glow 2.5s infinite;
+  box-shadow: 0 0 0px #00d4ff;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);}
+  50% { transform: scale(1.12);}
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0px #00d4ff;}
+}
+
+
+
+
+@media (max-width: 600px) {
+  .logo {
+    width: 120px;
+    max-width: 90vw;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="logo-loader">
+    <img src="{% static '' %}svg/fav copy.svg" alt="AlpicapFX Logo" width="80" />
+  </div>
+</div>
+
+     <!-- header  -->
+    {% block header %} {% endblock header %}
+
+    <!-- Main Content -->
+     {% block content %} {% endblock content %}
+
+
+    <!-- Footer -->
+    {% block footer %} {% endblock footer %}
+
+
+
+ <script src="{% static '' %}js/register.js"></script>
+
+
+
+
+
+
+
+ <script>
+  window.onload = function() {
+    // Clear all messages and reset form state
+    document.getElementById('registerForm').reset();
+    document.querySelectorAll('.error-message, .success-message').forEach(el => {
+        el.textContent = '';
+        el.style.display = 'none';
+    });
+};
+
+function clearMessages() {
+successMessage.style.display = 'none';
+generalError.style.display = 'none';
+// ...clear field errors too
+}
+ </script>
+
+
+{% comment %} 
+Add AJAX to Handle Form Submission
+Add this script at the end of your HTML (just before </body>), or in your register.js file if you prefer. {% endcomment %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const generalError = document.getElementById('generalError');
+
+
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        successMessage.style.display = 'none';
+        generalError.style.display = 'none';
+
+        // Gather form data
+        const formData = new FormData(form);
+
+        // CSRF token for Django
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch("{% url 'register_user' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.disabled = false;
+            if (data.success) {
+                successMessage.textContent = data.message + " Your User ID: " + data.user_id;
+                successMessage.style.display = 'block';
+                form.reset();
+                // Optionally redirect after a delay
+                setTimeout(() => window.location.href = '/login/', 2000);
+            } else {
+                generalError.textContent = data.message;
+                generalError.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            submitBtn.disabled = false;
+            generalError.textContent = "An error occurred. Please try again.";
+            generalError.style.display = 'block';
+        });
+    });
+});
+</script>
+
+
+
+{% comment %} Frontend: Display Field Errors and Redirect
+Update your AJAX script to:
+Show errors under each field.
+Redirect to login after success. {% endcomment %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const generalError = document.getElementById('generalError');
+
+    // Map field names to error div IDs
+    const errorFields = {
+        firstName: 'firstNameError',
+        lastName: 'lastNameError',
+        email: 'emailError',
+        phone: 'phoneError',
+        password: 'passwordError',
+        confirmPassword: 'confirmPasswordError',
+        terms: 'generalError', // Show terms error at top
+        general: 'generalError'
+    };
+
+    function clearErrors() {
+        Object.values(errorFields).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.textContent = '';
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        clearErrors();
+        successMessage.style.display = 'none';
+
+        const formData = new FormData(form);
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch("{% url 'register_user' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.disabled = false;
+            if (data.success) {
+                successMessage.textContent = data.message + " Redirecting to login...";
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    window.location.replace(data.redirect_url || '/login/');
+                }, 2000);
+                form.reset();
+            }
+
+            } else if (data.errors) {
+                // Show field-specific errors
+                for (const [field, msg] of Object.entries(data.errors)) {
+                    const errorDivId = errorFields[field] || 'generalError';
+                    const errorDiv = document.getElementById(errorDivId);
+                    if (errorDiv) {
+                        errorDiv.textContent = msg;
+                        errorDiv.style.display = 'block';
+                    }
+                }
+            } else {
+                generalError.textContent = "An error occurred. Please try again.";
+                generalError.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            submitBtn.disabled = false;
+            generalError.textContent = "An error occurred. Please try again.";
+            generalError.style.display = 'block';
+        });
+    });
+});
+</script>
+
+
+ <script>
+  window.addEventListener('load', function() {
+  const loader = document.getElementById('loader');
+  if (loader) {
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display = 'none', 300);
+  }
+});
+
+ </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Trading</h4>
+            <a href="{% url 'dashboard' %}">Binary Options</a>
+            <a href="{% url 'dashboard' %}">Forex</a>
+            <a href="{% url 'dashboard' %}">Cryptocurrencies</a>
+            <a href="{% url 'dashboard' %}">Commodities</a>
+            <a href="{% url 'dashboard' %}">Indices</a>
+        </div>
+        <div class="footer-section">
+            <h4>Platform</h4>
+            <a href="{% url 'homepage' %}">Web Trader</a>
+            <a href="{% url 'homepage' %}">Mobile App</a>
+            <a href="{% url 'homepage' %}">Desktop App</a>
+            <a href="{% url 'homepage' %}">API Documentation</a>
+        </div>
+        <div class="footer-section">
+            <h4>Education</h4>
+            <a href="{% url 'education' %}">Trading Academy</a>
+            <a href="{% url 'education' %}">Market Analysis</a>
+            <a href="{% url 'education' %}">Video Tutorials</a>
+            <a href="{% url 'education' %}">Webinars</a>
+        </div>
+        <div class="footer-section">
+            <h4>Support</h4>
+            <a href="{% url 'support' %}">Help Center</a>
+            <a href="{% url 'support' %}">Contact Us</a>
+            <a href="{% url 'support' %}">Live Chat</a>
+            <a href="{% url 'dashboard' %}">Account Manager</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>{{t_site.copyright}}</p>
+    </div>
+</footer>

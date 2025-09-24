@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>AlpicapFX Pro - Dashboard</title>
+
+        <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+    {% comment %} <link rel="icon" type="image/png" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest"> {% endcomment %}
+    <link rel="stylesheet" href="{% static '' %}css/dashboard.css"> 
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+
+
+
+
+<style>
+  .notification {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  margin: 16px 0;
+  border-radius: 12px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  position: relative;
+  min-width: 280px;
+  max-width: 420px;
+  animation: pop-in 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+  transition: opacity 0.4s, transform 0.4s;
+  opacity: 1;
+  z-index: 9999;
+}
+
+.notification .icon {
+  font-size: 1.7em;
+  margin-right: 16px;
+  animation: icon-bounce 1.2s infinite alternate;
+}
+
+.notification .message {
+  flex: 1;
+}
+
+.notification .close-btn {
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 16px;
+  color: #888;
+  transition: color 0.2s;
+}
+.notification .close-btn:hover {
+  color: #333;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #d4fc79 0%, #96e6a1 100%);
+  color: #155724;
+  border-left: 6px solid #28a745;
+  box-shadow: 0 0 16px 0 #28a74533;
+  animation: slide-in-right 0.7s;
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #ffdde1 0%, #ee9ca7 100%);
+  color: #721c24;
+  border-left: 6px solid #dc3545;
+  box-shadow: 0 0 16px 0 #dc354533;
+  animation: shake 0.7s;
+}
+
+.notification.warning {
+  background: linear-gradient(90deg, #fff6b7 0%, #f6416c 100%);
+  color:rgb(55, 55, 50);
+  border-left: 6px solid #ffc107;
+  box-shadow: 0 0 16px 0 #ffc10733;
+  animation: pulse 0.7s;
+  font-weight: 600;
+}
+
+.notification.info {
+  background: linear-gradient(90deg, #e3f0ff 0%, #b3d8fd 100%);
+  color: #0c5460;
+  border-left: 6px solid #007bff;
+  box-shadow: 0 0 16px 0 #007bff33;
+  animation: fade-in 0.7s;
+}
+
+.notification.none {
+  background: linear-gradient(90deg,rgb(24, 22, 120) 0%, #b3d8fd 100%);
+  color:rgb(72, 12, 96);
+  border-left: 6px solidrgb(255, 0, 128);
+  box-shadow: 0 0 16px 0rgba(50, 6, 36, 0.2);
+  animation: fade-in 0.7s;
+}
+
+/* Animations */
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.8) translateY(30px);}
+  100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+@keyframes icon-bounce {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(-6px);}
+}
+@keyframes slide-in-right {
+  0% { transform: translateX(100px); opacity: 0;}
+  100% { transform: translateX(0); opacity: 1;}
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0);}
+  20%, 60% { transform: translateX(-8px);}
+  40%, 80% { transform: translateX(8px);}
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 #ffc10755;}
+  70% { box-shadow: 0 0 16px 8px #ffc10733;}
+  100% { box-shadow: 0 0 0 0 #ffc10755;}
+}
+@keyframes fade-in {
+  from { opacity: 0;}
+  to { opacity: 1;}
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .notification {
+    max-width: 95vw;
+    min-width: 0;
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+  .notification .icon {
+    font-size: 1.3em;
+    margin-right: 10px;
+  }
+  .notification .close-btn {
+    margin-left: 8px;
+  }
+}
+
+/* Landscape view for mobile */
+@media (orientation: landscape) and (max-width: 900px) {
+  .notification {
+    max-width: 70vw;
+    font-size: 0.95rem;
+    padding: 10px 8px;
+  }
+}
+
+
+
+
+
+/* 3. CSS for the Green Dot
+If you want to keep your CSS clean, you can add this to your CSS file instead of inline: */
+.chat-notif-dot {
+    background: #28a745;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 8px #28a745;
+    z-index: 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 27, 46, 0.85); /* semi-transparent dark */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s;
+}
+
+.logo-loader img {
+  width: 80px;
+  height: 80px;
+  animation:
+    pulse 0.8s infinite,
+    glow 2.5s infinite;
+  box-shadow: 0 0 0px #00d4ff;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1);}
+  50% { transform: scale(1.12);}
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0px #00d4ff;}
+}
+
+
+
+
+@media (max-width: 600px) {
+  .logo {
+    width: 120px;
+    max-width: 90vw;
+  }
+}
+
+</style>
+
+
+
+
+
+
+
+
+</head>
+<body>
+<div id="loader">
+  <div class="logo-loader">
+    <img src="{% static '' %}svg/fav copy.svg" alt="AlpicapFX Logo" width="80" />
+  </div>
+</div>
+
+
+     <!-- header  -->
+    {% block header %} {% endblock header %}
+
+    <!-- Main Content -->
+    {% block content %} {% endblock content %}
+
+
+    <!-- Footer -->
+    {% block footer %} {% endblock footer %}
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Withdrawal Modal -->
+<div id="withdrawalModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close-button" onclick="closeModal('withdrawalModal')">&times;</span>
+    <h3>Withdrawal Request</h3>
+   <form id="withdrawalForm" class="modal-body" method="post" action="{% url 'withdraw' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+      {% comment %} 
+      <div class="modal-form-group">
+        <label for="withdrawAmount">Withdrawal Amount ($)</label>
+        <input type="number" id="withdrawAmount" class="modal-input" min="5000" name="withdrawAmount" required>
+        <span id="withdrawAmountMsg" style="color:#ef4444; font-size:0.95rem; display:block; margin-top:0.5rem;">
+          You can only withdraw above $5,000.
+        </span>
+      </div> 
+      {% endcomment %}
+
+          <div class="modal-form-group">
+            <label for="withdrawalAmount">Amount ($)</label>
+            <input type="number" id="withdrawalAmount" name="withdrawAmount" class="modal-input" placeholder="Enter amount" min="10" required oninput="checkWithdrawalAmount()">
+            <div id="balanceInfo" style="color:#10b981; margin-top:5px;">
+                Available balance: ${{ user.balance }}
+            </div>
+            <div id="withdrawalError" style="color:#ef4444; margin-top:5px; display:none;">
+                <!-- Error message will appear here -->
+            </div>
+        </div>
+      <div class="modal-form-group">
+        <label for="withdrawMethod">Withdrawal Method</label>
+        <select id="withdrawMethod" class="modal-select" name="withdrawMethod"  required>
+          <option value="">Select Method</option>
+          <option value="Bank Transfer">Bank&nbsp;Transfer:Cashapp,Paypal..&nbsp;🏛</option>
+          <option value="Bitcoin">Bitcoin&nbsp;₿</option>
+          <option value="Ethereum">Ethereum&nbsp;⟠</option>
+          <option value="Dogecoin"> Dogecoin&nbsp;Ð</option>
+          <option value="Litecoin"> Litecoin&nbsp;Ł </option>
+          <option value="Solana"> Solana&nbsp;☀️</option>
+          <option value="Credit Card">Card Payment&nbsp;💳</option>
+        </select>
+      </div>
+      <div class="modal-form-group">
+        <label for="recipientName">Recipient Name (Bank/Wallet)</label>
+        <input type="text" id="recipientName" class="modal-input" name="recipientName" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="accountNo">Account No. / Wallet Address / Tag</label>
+        <input type="text" id="accountNo" class="modal-input" name="accountNo" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="withdrawPhone">Phone Number</label>
+        <input type="tel" id="withdrawPhone" class="modal-input" name="withdrawPhone" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="withdrawEmail">Email Address</label>
+        <input type="email" id="withdrawEmail" class="modal-input" name="withdrawEmail" required>
+      </div>
+      <div class="modal-form-group file-upload-wrapper">
+          <label class="file-upload-label">
+          Upload Front ID Card 🪪
+          <input type="file" id="frontIdCard" name="frontIdCard" accept="image/*,.pdf" required>
+          <span class="file-name" id="frontIdCardName"></span>
+          </label>
+          <label class="file-upload-label">
+          Upload Back ID Card
+          <input type="file" id="backIdCard" accept="image/*,.pdf" name="backIdCard" required>
+          <span class="file-name" id="backIdCardName"></span>
+          </label>
+      </div>
+      <button type="submit" class="cta-button">Submit Withdrawal</button>
+    </form>
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Deposit Modal -->
+<div id="depositModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close-button" onclick="closeModal('depositModal')">&times;</span>
+    <h3>Deposit Funds</h3>
+    <form id="depositForm" class="modal-body"  method="post" action="{% url 'deposit' %}">
+      {% csrf_token %}
+      <div class="modal-form-group">
+        <label for="depositAmount">Amount ($)</label>
+        <input type="number" id="depositAmount" class="modal-input" min="100" name="depositAmount" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="depositMethod" >Payment Method</label>
+        <select id="depositMethod" class="modal-select" name="depositMethod" required>
+          <option value="">Select Method</option>
+          <option value="Bank Transfer">Bank&nbsp;Transfer:Cashapp,Paypal..&nbsp;🏛</option>
+          <option value="Bitcoin">Bitcoin&nbsp;₿</option>
+          <option value="Ethereum">Ethereum&nbsp;⟠</option>
+          <option value="Dogecoin"> Dogecoin&nbsp;Ð</option>
+          <option value="Litecoin"> Litecoin&nbsp;Ł </option>
+          <option value="Solana"> Solana&nbsp;☀️</option>
+          <option value="Credit Card">Card Payment&nbsp;💳</option>
+        </select>
+      </div>
+      <div class="modal-form-group">
+        <label for="depositEmail">Active Email Address</label>
+        <input type="email" id="depositEmail" class="modal-input" name="depositEmail" required>
+      </div>
+      <div class="modal-form-group">
+        <label for="depositPhone">Active Phone Number</label>
+        <input type="tel" id="depositPhone" class="modal-input" name="depositPhone" required>
+      </div>
+      <button type="submit" class="cta-button">Submit Deposit</button> 
+    </form>
+
+
+
+ 
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="liveChatModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close-button" onclick="closeModal('liveChatModal')">&times;</span>
+    <h3>Live Chat with Admin</h3>
+    <div class="modal-body">
+
+<div class="amount-buttons" style="margin-bottom:1rem;">
+  <button class="amount-button" type="button" onclick="sendQuickChat('How to deposit?')">How to deposit?</button>
+  <button class="amount-button" type="button" onclick="sendQuickChat('How to withdraw?')">How to withdraw?</button>
+  <button class="amount-button" type="button" onclick="sendQuickChat('How long does payment take?')">How long does payment take?</button>
+</div>
+
+
+      <div class="chat-messages" id="chatMessages" style="height:250px;overflow-y:auto;">
+           {% for msg in messages %}
+        <div class="message {% if msg.sender == 'user' %}user{% else %}admin{% endif %}">
+            <b>{% if msg.sender == 'user' %}User{% elif msg.sender == 'admin' %} Admin {% else %} Quick Message {% endif %}:</b>
+            {% if msg.message %}{{ msg.message }}<br>{% endif %}
+            {% if msg.file %}
+                {% if msg.is_image %}
+                    <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+                {% else %}
+                    <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+                {% endif %}
+            {% endif %}
+            <small>{{ msg.timestamp|date:"Y-m-d H:i" }}</small>
+        </div>
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}    
+      </div>
+
+
+
+      {% comment %} <form id="chatForm" class="chat-input-group" method="post" enctype="multipart/form-data" action="{% url 'user_chat' %}">
+          {% csrf_token %}
+          <input type="text" name="message" id="chatInput" class="chat-input" placeholder="Type your message...">
+          <label class="attach-button" title="Attach file">
+              <i class="fas fa-paperclip"></i>
+              <input type="file" name="file" id="chatAttachment" style="display:none;" onchange="showFileName(event)">
+          </label>
+          <button type="submit" class="send-button"><i class="fas fa-paper-plane"></i></button>
+      </form>
+       {% endcomment %}
+
+
+
+
+
+{% comment %} 
+a. Add AJAX Send for Chat Form
+Replace your chat form submit with AJAX:
+{% endcomment %}
+<form id="chatForm" class="chat-input-group" method="post" enctype="multipart/form-data" action="{% url 'user_chat' %}">
+    {% csrf_token %}
+    <input type="text" name="message" id="chatInput" class="chat-input" placeholder="Type your message...">
+    <label class="attach-button" title="Attach file">
+        <i class="fas fa-paperclip"></i>
+        <input type="file" name="file" id="chatAttachment" style="display:none;" onchange="showFileName(event)">
+    </label>
+    <button type="submit" class="send-button"><i class="fas fa-paper-plane"></i></button>
+</form>
+      <div id="fileName" style="font-size:0.9em;color:whitesmoke;margin-top:4px;">Selected Document  will appear here</div>
+
+    </div>
+  </div>
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Notification Modal -->
+<div id="notificationModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close-button" onclick="closeModal('notificationModal')">&times;</span>
+    <h3>Notifications</h3>
+    <div class="modal-body notification-list" id="notificationList">
+      <!-- Notifications will be injected here -->
+    </div>
+  </div>
+</div>
+
+
+
+    
+
+
+
+      {% comment %} {% if notification %}
+      document.getElementById('notificationsBtn').style.background = '#744dffff';
+      {% endif %} {% endcomment %}
+
+    <script src="{% static '' %}js/dashboard.js">        
+      // Optionally, open modal automatically if a new notification was just added
+      {% if notifications %}
+      document.getElementById('notificationModal').style.display = 'flex';
+      {% endif %}
+    </script>
+    
+    <div id="alert-container" style="position: fixed; top: 80px; right: 20px; z-index: 9999;"></div>
+     
+
+
+
+
+
+
+
+    
+<script>
+    // Auto-dismiss after 4 seconds (adjust as needed)
+function autoDismissNotification(id, timeout = 4000) {
+  setTimeout(function() {
+    const notif = document.getElementById(id);
+    if (notif) {
+      notif.style.opacity = '0';
+      notif.style.transform = 'translateY(-20px)';
+      setTimeout(() => notif.style.display = 'none', 400);
+    }
+  }, timeout);
+}
+
+// Manual close
+function closeNotification(id) {
+  const notif = document.getElementById(id);
+  if (notif) {
+    notif.style.opacity = '0';
+    notif.style.transform = 'translateY(-20px)';
+    setTimeout(() => notif.style.display = 'none', 400);
+  }
+}
+
+// Example: Auto-dismiss all notifications on page load
+window.onload = function() {
+  autoDismissNotification('notif-success', 4000);
+  autoDismissNotification('notif-error', 5000);
+  autoDismissNotification('notif-warning', 5000);
+  autoDismissNotification('notif-info', 4000);
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // Get user balance from Django context
+    const userBalance = parseFloat("{{ user.balance }}");
+
+    function checkWithdrawalAmount() {
+        const amountInput = document.getElementById('withdrawalAmount');
+        const errorDiv = document.getElementById('withdrawalError');
+        const submitBtn = document.getElementById('withdrawalSubmitBtn');
+        const amount = parseFloat(amountInput.value);
+
+        if (amount > userBalance) {
+            errorDiv.textContent = "Available balance exceeded";
+            errorDiv.style.display = "block";
+            submitBtn.disabled = true;
+        } else {
+            errorDiv.textContent = "";
+            errorDiv.style.display = "none";
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Prevent form submission if balance is exceeded (extra safety)
+    document.getElementById('withdrawalForm').addEventListener('submit', function(e) {
+        const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+        if (amount > userBalance) {
+            e.preventDefault();
+            checkWithdrawalAmount();
+        }
+    });
+</script>
+
+
+
+{% comment %} 
+a. Add AJAX Send for Chat Form
+Replace your chat form submit with AJAX:
+{% endcomment %}
+
+<script>
+  // CSRF helper for AJAX
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+// AJAX submit for chat
+$('#chatForm').on('submit', function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    $.ajax({
+        url: "{% url 'user_chat' %}",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {'X-CSRFToken': csrftoken},
+        success: function(data) {
+            $('#chatInput').val('');
+            $('#chatAttachment').val('');
+            $('#fileName').text('Selected Document will appear here');
+            loadMessages(); // reload messages after sending
+        }
+    });
+});
+</script>
+
+{% comment %} 
+b. AJAX Polling for New Messages
+Add a function to fetch messages every few seconds: 
+{% endcomment %}
+<script>
+function loadMessages() {
+    $.get("{% url 'user_chat' %}?ajax=1", function(data) {
+        $('#chatMessages').html(data);
+        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+    });
+}
+
+// Poll every 2 seconds
+setInterval(loadMessages, 2000);
+loadMessages(); // initial load
+</script>
+
+
+  
+
+
+
+
+
+{% comment %} implement real-time notification for the green dot on the live chat button 
+2. Frontend: AJAX Polling on Dashboard
+In your dashboard template (where the chat button is), add this JavaScript: {% endcomment %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function pollUnreadAdminMessages() {
+    $.get("{% url 'check_unread_admin_messages' %}", function(data) {
+        if (data.has_unread) {
+            // Show "R", hide "A"
+            $('#adminReplyDotA').hide();
+            $('#adminReplyDotR').show();
+        } else {
+            // Show "A", hide "R"
+            $('#adminReplyDotA').show();
+            $('#adminReplyDotR').hide();
+        }
+    });
+}
+
+// Poll every 2 seconds
+setInterval(pollUnreadAdminMessages, 2000);
+pollUnreadAdminMessages(); // Initial check
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <script>
+    window.addEventListener('load', function() {
+  const loader = document.getElementById('loader');
+  if (loader) {
+    loader.style.opacity = '0';
+    setTimeout(() => loader.style.display = 'none', 300);
+  }
+});
+
+ </script>
+
+
+</body>
+</html>

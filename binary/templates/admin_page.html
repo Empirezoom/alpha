@@ -1,0 +1,266 @@
+{% extends 'base_admin.html' %}
+{% load static %}
+{% load humanize %}
+{% comment %} {% block header %} {% include 'header2.html' %} {% endblock header %} {% endcomment %}
+
+
+{% block content %}
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 3.5s;"></div>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">AlpicapFx Pro</div>
+            <div class="admin-role">Administrator</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="nav-icon">📊</span>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="requestdeposit.html" class="nav-link">
+                    <span class="nav-icon">💰</span>
+                    Deposit Requests
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="requestwithdrawal.html" class="nav-link">
+                    <span class="nav-icon">💸</span>
+                    Withdrawal Requests
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#users" class="nav-link">
+                    <span class="nav-icon">👥</span>
+                    User Management
+                </a>
+            </li>
+        </ul>
+
+        <div class="logout-section">
+            <button class="logout-btn" onclick="logout()">
+                <span class="nav-icon">🚪</span>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <h1 class="page-title">{{user.username|title}}&nbsp;Dashboard</h1>
+            <div class="time-display" id="currentTime">--</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Users</span>
+                    <span class="stat-icon">👥</span>
+                </div>
+                <div class="stat-value" id="totalUsers">{{ user_count }}</div>
+                <div class="stat-change">+12% from last month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Online Now</span>
+                    <span class="stat-icon">🟢</span>
+                </div>
+                <div class="stat-value" id="onlineUsers">0</div>
+                <div class="stat-change">Real-time count</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">New Messages</span>
+                    <span class="stat-icon">💬</span>
+                </div>
+
+                <div class="stat-value" id="newMessages">{{users.total_msg_count}}</div>
+                <div class="stat-change">Requires attention</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Today</span>
+                    <span class="stat-icon">⚡</span>
+                </div>
+                <div class="stat-value" id="activeToday">0</div>
+                <div class="stat-change">Last 24 hours</div>
+            </div>
+        </div>
+
+        <!-- Action Section -->
+        <div class="action-section">
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+                <div class="section-line"></div>
+            </div>
+
+            
+            <div class="action-grid">
+                <div class="action-card" onclick="window.location.href='{% url 'transaction_list' %}'">
+                    
+                    <span id="transaction-notification" class="notification-dot"></span>
+
+                    <div class="action-header">
+                        <span class="action-icon">💰</span>
+                        <div class="action-title">Transactions Requests</div>
+                        <span class="action-icon">💸</span>
+                    </div>
+                    <div class="action-description">
+                        Review and approve pending deposit requests from users,
+                        Process and manage user withdrawal requests
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Users Section -->
+        <div class="users-section" id="users">
+            <div class="users-header">
+                <div class="section-header">
+                    <h2 class="section-title">User Management</h2>
+                    <div class="section-line"></div>
+                </div>
+                
+                <div class="search-bar">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search users..." id="searchInput">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Balance</th>
+                            <th>Joined</th>
+                            <th>Messages</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                   <tbody id="usersTableBody">
+    {% for user in users %}
+    <tr>
+        <td>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}
+                </div>
+                <div class="user-info">
+                    <h4>{{ user.first_name|title}} {{ user.last_name|title }}</h4>
+                    <span>{{ user.email }}</span>
+                </div>
+            </div>
+        </td>
+        <td>
+            <!-- You can add online/offline logic if you have it -->
+ 
+
+                {% if user.has_new_message %}
+                    <div class="status-indicator status-online">
+                        <div class="status-dot-online"></div>
+                        Online
+                    </div>
+
+                    {% else %}
+
+                    <div class="status-indicator status-offline">
+                        <div class="status-dot"></div>
+                        Offline
+                    </div>
+                {% endif %}
+
+
+      
+        </td>
+        <td>
+            <div class="balance-display">{{ user.balance|floatformat:2 }}</div>
+        </td>
+        <td>{{ user.joined|date:"M d, Y" }}</td>
+        <td>
+            <div class="message-indicator">
+                💬
+                {% if user.has_new_message %}
+                    <div class="message-badge">{{ user.message_count }}</div>
+                {% endif %}
+            </div>
+        </td>
+        <td>
+            <a href="{% url 'admin_chat_with_user' user.id %}" class="chat-button">
+                Live Chat
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    
+{% endblock content %}

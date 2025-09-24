@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpicapFX Pro - Login</title>
+
+    <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+
+    <!-- PNG fallback for older browsers -->
+    <!-- <link rel="icon" type="image/png" href="/favicon-32x32.png"> -->
+
+    <!-- Apple Touch Icon -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> -->
+
+    <!-- Manifest for web app -->
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+
+    <link rel="stylesheet" href="{% static '' %}css/login.css"> 
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/h&f.css">  {% endcomment %}
+    
+
+</head>
+<body>
+
+<div id="loader">
+  <div class="logo-loader">
+    <img src="{% static '' %}svg/fav copy.svg" alt="AlpicapFX Logo" width="80" />
+  </div>
+</div>
+
+
+     <!-- header  -->
+    {% block header %} {% endblock header %}
+
+    <!-- Main Content -->
+     {% block content %} {% endblock content %}
+
+
+    <!-- Footer -->
+    {% block footer %} {% endblock footer %}
+
+
+
+ <script src="{% static '' %}js/login.js"></script>
+</body>
+</html>

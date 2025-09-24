@@ -1,0 +1,339 @@
+{% extends 'base_admin_with _user.html' %}
+{% load static %}
+{% load humanize %}
+{% comment %} {% block header %} {% include 'header2.html' %} {% endblock header %} {% endcomment %}
+
+
+{% block content %}
+
+
+
+
+
+
+
+
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="#" class="mobile-menu-logo">
+        <div class="logo-icon">ALP</div>
+        <span class="logo-text">AlpicapFxPro</span>
+      </a>
+    </div>
+
+    <div class="mobile-menu-content">
+      <!-- Navigation Section -->
+      <div class="mobile-menu-section">
+        <div class="mobile-menu-title">Navigation</div>
+        <a href="/admin" class="mobile-menu-item">
+          <i class="fas fa-tachometer-alt"></i>
+          <span class="text">Admin Dashboard</span>
+        </a>
+        <a href="/admin/chats" class="mobile-menu-item">
+          <i class="fas fa-comments"></i>
+          <span class="text">Chat Management</span>
+          <span class="badge">12</span>
+        </a>
+        <button class="mobile-menu-item" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i>
+          <span class="text">Back to Chat List</span>
+        </button>
+      </div>
+
+      <!-- Chat Actions Section -->
+      <div class="mobile-menu-section">
+        <div class="mobile-menu-title">Chat Actions</div>
+        <button class="mobile-menu-item" onclick="toggleTyping()">
+          <i class="fas fa-pen"></i>
+          <span class="text">Show Typing</span>
+        </button>
+        <button class="mobile-menu-item" onclick="viewProfile()">
+          <i class="fas fa-user"></i>
+          <span class="text">User Profile</span>
+        </button>
+        <button class="mobile-menu-item" onclick="muteUser()">
+          <i class="fas fa-volume-mute"></i>
+          <span class="text">Mute User</span>
+        </button>
+        <button class="mobile-menu-item" onclick="attachFile()">
+          <i class="fas fa-paperclip"></i>
+          <span class="text">Attach File</span>
+        </button>
+        <button class="mobile-menu-item" onclick="endChat()">
+          <i class="fas fa-times"></i>
+          <span class="text">End Chat</span>
+        </button>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="mobile-menu-section">
+        <div class="mobile-menu-title">Statistics</div>
+        <div class="mobile-menu-stats">
+          <div class="mobile-stat-card">
+            <div class="mobile-stat-value">12</div>
+            <div class="mobile-stat-label">Active Chats</div>
+          </div>
+          <div class="mobile-stat-card">
+            <div class="mobile-stat-value">3</div>
+            <div class="mobile-stat-label">Pending</div>
+          </div>
+          <div class="mobile-stat-card">
+            <div class="mobile-stat-value">98%</div>
+            <div class="mobile-stat-label">Response Rate</div>
+          </div>
+          <div class="mobile-stat-card">
+            <div class="mobile-stat-value">24/7</div>
+            <div class="mobile-stat-label">Availability</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support Section -->
+      <div class="mobile-menu-section">
+        <div class="mobile-menu-title">Support</div>
+        <a href="/admin/help" class="mobile-menu-item">
+          <i class="fas fa-question-circle"></i>
+          <span class="text">Help Center</span>
+        </a>
+        <a href="/admin/docs" class="mobile-menu-item">
+          <i class="fas fa-book"></i>
+          <span class="text">Documentation</span>
+        </a>
+        <a href="/admin/support" class="mobile-menu-item">
+          <i class="fas fa-life-ring"></i>
+          <span class="text">Support</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Admin Profile Section -->
+    <div class="mobile-admin-profile">
+      <div class="admin-avatar">S.U</div>
+      <div class="mobile-admin-details">
+        <div class="mobile-admin-name">{{user.username}}</div>
+        <div class="mobile-admin-role">Senior Support Agent</div>
+      </div>
+      <button class="action-btn" onclick="showProfileModal(); closeMobileMenu();" title="Profile Settings">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <a href="#" class="logo">
+        <div class="logo-icon">ALP</div>
+        <span class="logo-text">AlpicapFxPro</span>
+      </a>
+      <nav class="breadcrumb">
+        <a href="{% url 'admin_chat_users' %}">Admin</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="/admin/chats">Chat Management</a>
+        <i class="fas fa-chevron-right"></i>
+        <span class="current">User Chat</span>
+      </nav>
+    </div>
+    
+    <div class="header-right">
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Active Chats</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Pending</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">98%</div>
+          <div class="stat-label">Response Rate</div>
+        </div>
+      </div>
+      
+      <div class="admin-profile" onclick="showProfileModal()">
+        <div class="admin-avatar">S.U</div>
+        <div class="admin-info">
+          <div class="admin-name">{{user.username}}</div>
+          <div class="admin-role">Senior Support</div>
+        </div>
+        <i class="fas fa-chevron-down" style="margin-left: 0.5rem; font-size: 0.75rem; color: var(--text-muted);"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="chat-container">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="user-info">
+          <div class="user-avatar">
+             <i class="fas fa-user"></i>
+            <div class="status-indicator"></div>
+          </div>
+          <div class="user-details">
+            <h3>{{ chat_user.first_name|title }} {{ chat_user.last_name|title }}</h3>
+            <small><i class="fas fa-message"></i>&nbsp;{{ chat_user.email }}</small>
+            <div class="user-status">ID:&nbsp;{{ chat_user.main_id}}</div>
+          </div>
+        </div>
+        
+        <div class="chat-actions">
+          <button class="action-btn" onclick="goBack()" title="Back to Chat List">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <button class="action-btn" onclick="toggleTyping()" title="Show Typing">
+            <i class="fas fa-pen"></i>
+          </button>
+          <button class="action-btn" onclick="viewProfile()" title="User Profile">
+            <i class="fas fa-user"></i>
+          </button>
+          <button class="action-btn" onclick="muteUser()" title="Mute User">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+          <button class="action-btn" onclick="endChat()" title="End Chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- Messages -->
+    {% comment %} <div class="messages-container" id="messagesContainer"     class="chat-messages" id="chatMessages"> {% endcomment %}
+    <div class="messages-container chat-messages" id="chatMessages">
+
+
+        {% for msg in messages %}
+                
+      
+
+            {% if msg.sender == 'user' %}
+                <div class="message user">
+                {% if msg.message %}{{ msg.message }}<br>{% endif %}
+
+                {% if msg.file %}
+                    {% if msg.is_image %}
+                        <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+                    {% else %}
+                        <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+                    {% endif %}
+                {% endif %}
+                    <div class="message-time">{{ msg.timestamp|date:"Y-m-d H:i" }}</div>
+                </div>
+
+
+            {% elif  msg.sender == 'admin' %}
+                <div class="message admin">
+                {% if msg.message %}{{ msg.message }}<br>{% endif %}
+
+                {% if msg.file %}
+                    {% if msg.is_image %}
+                        <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+                    {% else %}
+                        <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+                    {% endif %}
+                {% endif %}
+                    <div class="message-time">{{ msg.timestamp|date:"Y-m-d H:i" }}</div>
+                </div>
+          
+            {% endif %}
+
+
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}
+
+    </div>
+      <!-- Input Area -->
+    <div class="input-area">
+        <div class="quick-responses">
+          <button class="quick-btn" onclick="useQuickResponse('deposit')">Deposit Info</button>
+          <button class="quick-btn" onclick="useQuickResponse('withdraw')">Withdrawal Info</button>
+          <button class="quick-btn" onclick="useQuickResponse('standard')">Standard</button>
+          <button class="quick-btn" onclick="useQuickResponse('acknowledge')">Acknowledge</button>
+          <button class="quick-btn" onclick="useQuickResponse('security')">Security Verification</button>
+          <button class="quick-btn" onclick="useQuickResponse('gather')">Gather Information</button>
+          <button class="quick-btn" onclick="useQuickResponse('successful')">Deposit Successful</button>
+          <button class="quick-btn" onclick="useQuickResponse('pending')">Deposit Pending</button>
+          <button class="quick-btn" onclick="useQuickResponse('deposit_option')">Deposit Option</button>
+          <button class="quick-btn" onclick="useQuickResponse('greeting')">Greeting</button>
+        </div>
+        <!-- File Display Area -->
+        <div class="file-display" id="fileDisplay">
+          <div class="file-icon">
+            <i class="fas fa-file"></i>
+          </div>
+          <div class="file-info">
+            <div class="file-name" id="fileName">No file selected</div>
+            <div class="file-size" id="fileSize">0 KB</div>
+          </div>
+          <button class="file-remove" onclick="removeFile()" title="Remove file">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+
+        <form method="post" class="admin-chat-form input-group" enctype="multipart/form-data" id="adminChatForm">
+        {% csrf_token %}
+        <textarea class="message-input" id="messageInput" placeholder="Type your message..." rows="1" required name="message"></textarea>
+        <button type="button" class="input-btn" id="attachBtn" onclick="attachFile()" title="Attach File">
+        <i class="fas fa-paperclip"></i>
+        </button>
+        <button type="submit" class="input-btn send-btn" title="Send Message">
+        <i class="fas fa-paper-plane"></i>
+        </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    
+{% endblock content %}

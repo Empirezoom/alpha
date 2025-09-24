@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <title>AlpicapFX Pro - Admin Chat</title>
+          <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+    {% comment %} <link rel="icon" type="image/png" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest"> {% endcomment %}
+    <link rel="stylesheet" href="{% static '' %}css/admin.css"> 
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/dashboard.css">  {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/dashboard.css">  {% endcomment %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+   <style>
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 27, 46, 0.85); /* semi-transparent dark */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s;
+    }
+
+    .logo-loader img {
+      width: 80px;
+      height: 80px;
+      animation:
+        pulse 0.8s infinite,
+        glow 2.5s infinite;
+      box-shadow: 0 0 0px #00d4ff;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);}
+      50% { transform: scale(1.12);}
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 0px #00d4ff;}
+    }
+
+
+
+
+    @media (max-width: 600px) {
+      .logo {
+        width: 120px;
+        max-width: 90vw;
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+/* 3. CSS for the Green Dot
+If you want to keep your CSS clean, you can add this to your CSS file instead of inline: */
+.chat-notif-dot {
+    background: #28a745;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 8px #28a745;
+    z-index: 10;
+}
+
+
+
+
+
+
+.admin-reply-dot {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background: #2563eb;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px #2563eb88;
+  z-index: 3;
+  font-size: 0.95rem;
+  font-weight: bold;
+  animation: notif-pulse-blue 1.5s infinite;
+}
+
+/* .admin-dot-text {
+    font-size: 0.9em;
+    font-weight: bold;
+} */
+.admin-dot-text {
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+#adminReplyDotR {
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: notif-pulse-green 1.5s infinite;
+}
+
+@keyframes notif-pulse-blue {
+  0%, 100% { box-shadow: 0 0 8px #2563eb88; }
+  50% { box-shadow: 0 0 16px #2563ebcc, 0 0 0 8px #2563eb22; }
+} 
+@keyframes notif-pulse-green {
+  0%, 100% { box-shadow: 0 0 8px #10b98188; }
+  50% { box-shadow: 0 0 16px #10b981cc, 0 0 0 8px #10b98122; }
+} 
+
+
+    </style>
+  {% comment %} <style>
+
+  </style> {% endcomment %}
+</head>
+<body>
+
+<div id="loader">
+  <div class="logo-loader">
+    <img src="{% static '' %}svg/fav copy.svg" alt="AlpicapFX Logo" width="80" />
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <!-- header  -->
+    {% comment %} {% block header %} {% endblock header %} {% endcomment %}
+
+    <!-- Main Content -->
+    {% block content %} {% endblock content %}
+
+
+    <!-- Footer -->
+    {% comment %} {% block footer %} {% endblock footer %} {% endcomment %}
+
+
+
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>
+      © 2024 AlpicapFxPro Admin Panel
+    </div>
+    <nav class="footer-links">
+      <a href="/admin/help">Help</a>
+      <a href="/admin/docs">Docs</a>
+      <a href="/admin/support">Support</a>
+    </nav>
+    <div class="system-status">
+      <div class="status-dot"></div>
+      <span>All Systems Operational</span>
+    </div>
+  </footer>
+
+  <!-- Profile Modal -->
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="hideProfileModal()">&times;</button>
+      <div class="modal-header">
+        <h2 class="modal-title">Admin Profile</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>Name:</strong> {{user.username|title}}</p>
+        <p><strong>Email:</strong>&nbsp;{{user.email}}</p>
+        <p><strong>Role:</strong> Senior Support Agent</p>
+        <p><strong>Status:</strong> Online</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden File Input -->
+  <input type="file" id="fileInput" style="display: none;" onchange="handleFileUpload(event)">
+
+
+
+
+
+
+
+
+<script src="{% static '' %}js/admin.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  {% comment %} 
+  B. Admin Side (admin_chat_with_user.html)
+  a. AJAX Send for Admin Chat Form 
+  {% endcomment %}
+
+  <script>
+  $('.admin-chat-form').on('submit', function(e) {
+      e.preventDefault();
+      let formData = new FormData(this);
+      $.ajax({
+          url: window.location.href,
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          headers: {'X-CSRFToken': csrftoken},
+          success: function(data) {
+              $('input[name="message"]').val('');
+              $('input[name="file"]').val('');
+              loadAdminMessages();
+          }
+      });
+  });
+  </script>
+
+  {% comment %} b. AJAX Polling for Admin Messages {% endcomment %}
+
+  <script>
+      function loadAdminMessages() {
+      $.get(window.location.href + "?ajax=1", function(data) {
+          $('#chatMessages').html(data);
+          $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+      });
+  }
+  setInterval(loadAdminMessages, 2000);
+  loadAdminMessages();
+  </script>
+
+ 
+
+{% comment %} 
+  3. AJAX Polling for New Messages
+
+
+Add this script after your form and after jQuery is loaded: {% endcomment %}
+<script>
+function loadAdminMessages() {
+    $.get(window.location.href + "?ajax=1", function(data) {
+        $('#chatMessages').html(data);
+        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+    });
+}
+setInterval(loadAdminMessages, 2000);
+loadAdminMessages();
+</script>
+
+{% comment %} 4. AJAX Send for Admin
+
+Add this script after the polling script: {% endcomment %}
+
+<script>
+$('#adminChatForm').on('submit', function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    $.ajax({
+        url: window.location.href,
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {'X-CSRFToken': csrftoken},
+        success: function(data) {
+            $('#messageInput').val('');
+            $('input[name="file"]').val('');
+            loadAdminMessages();
+        }
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('load', function() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => loader.style.display = 'none', 300);
+    }
+  });
+
+ </script>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} implement real-time notification for the green dot on the live chat button 
+2. Frontend: AJAX Polling on Dashboard
+In your dashboard template (where the chat button is), add this JavaScript: {% endcomment %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function pollUnreadAdminMessages() {
+    $.get("{% url 'check_unread_admin_messages' %}", function(data) {
+        if (data.has_unread) {
+            // Show "R", hide "A"
+            $('#adminReplyDotA').hide();
+            $('#adminReplyDotR').show();
+        } else {
+            // Show "A", hide "R"
+            $('#adminReplyDotA').show();
+            $('#adminReplyDotR').hide();
+        }
+    });
+}
+
+// Poll every 2 seconds
+setInterval(pollUnreadAdminMessages, 2000);
+pollUnreadAdminMessages(); // Initial check
+</script>
+
+</body>
+</html>

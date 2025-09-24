@@ -1,0 +1,34 @@
+<!-- Floating Elements -->
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+
+<!-- Header -->
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            {{t_site.logo|safe}}
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'education' %}">Education</a></li>
+            <li><a href="{% url 'support' %}">Support</a></li>
+            {% comment %} <li><a href="">Demo🎬</a></li> {% endcomment %}
+        </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <div class="hamburger"></div>
+        </button>
+        <a href="{% url 'login' %}" class="cta-button">Login</a>
+    </nav>
+    
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="mobile-nav-links">
+            <a href="{% url 'homepage' %}">home</a>
+            <a href="{% url 'education' %}">Education</a>
+            <a href="{% url 'support' %}">Support</a>
+            {% comment %} <a href="#features">Demo🎬</a> {% endcomment %}
+            <a href="{% url 'login' %}" class="cta-button">Login</a>
+        </div>
+    </div>
+</header>

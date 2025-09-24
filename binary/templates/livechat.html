@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+  <title>AlphaTrade Pro - Live Chat</title>
+
+        <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/index.css">  {% endcomment %}
+    <link rel="stylesheet" href="{% static '' %}css/livechat.css"> 
+    <link rel="stylesheet" href="{% static '' %}css/dashboard.css"> 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+
+
+
+<style>
+  .notification {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  margin: 16px 0;
+  border-radius: 12px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  position: relative;
+  min-width: 280px;
+  max-width: 420px;
+  animation: pop-in 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+  transition: opacity 0.4s, transform 0.4s;
+  opacity: 1;
+  z-index: 9999;
+}
+
+.notification .icon {
+  font-size: 1.7em;
+  margin-right: 16px;
+  animation: icon-bounce 1.2s infinite alternate;
+}
+
+.notification .message {
+  flex: 1;
+}
+
+.notification .close-btn {
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 16px;
+  color: #888;
+  transition: color 0.2s;
+}
+.notification .close-btn:hover {
+  color: #333;
+}
+
+.notification.success {
+  background: linear-gradient(90deg, #d4fc79 0%, #96e6a1 100%);
+  color: #155724;
+  border-left: 6px solid #28a745;
+  box-shadow: 0 0 16px 0 #28a74533;
+  animation: slide-in-right 0.7s;
+}
+
+.notification.error {
+  background: linear-gradient(90deg, #ffdde1 0%, #ee9ca7 100%);
+  color: #721c24;
+  border-left: 6px solid #dc3545;
+  box-shadow: 0 0 16px 0 #dc354533;
+  animation: shake 0.7s;
+}
+
+.notification.warning {
+  background: linear-gradient(90deg, #fff6b7 0%, #f6416c 100%);
+  color:rgb(55, 55, 50);
+  border-left: 6px solid #ffc107;
+  box-shadow: 0 0 16px 0 #ffc10733;
+  animation: pulse 0.7s;
+  font-weight: 600;
+}
+
+.notification.info {
+  background: linear-gradient(90deg, #e3f0ff 0%, #b3d8fd 100%);
+  color: #0c5460;
+  border-left: 6px solid #007bff;
+  box-shadow: 0 0 16px 0 #007bff33;
+  animation: fade-in 0.7s;
+}
+
+.notification.none {
+  background: linear-gradient(90deg,rgb(24, 22, 120) 0%, #b3d8fd 100%);
+  color:rgb(72, 12, 96);
+  border-left: 6px solidrgb(255, 0, 128);
+  box-shadow: 0 0 16px 0rgba(50, 6, 36, 0.2);
+  animation: fade-in 0.7s;
+}
+
+/* Animations */
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.8) translateY(30px);}
+  100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+@keyframes icon-bounce {
+  0% { transform: translateY(0);}
+  100% { transform: translateY(-6px);}
+}
+@keyframes slide-in-right {
+  0% { transform: translateX(100px); opacity: 0;}
+  100% { transform: translateX(0); opacity: 1;}
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0);}
+  20%, 60% { transform: translateX(-8px);}
+  40%, 80% { transform: translateX(8px);}
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 #ffc10755;}
+  70% { box-shadow: 0 0 16px 8px #ffc10733;}
+  100% { box-shadow: 0 0 0 0 #ffc10755;}
+}
+@keyframes fade-in {
+  from { opacity: 0;}
+  to { opacity: 1;}
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .notification {
+    max-width: 95vw;
+    min-width: 0;
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+  .notification .icon {
+    font-size: 1.3em;
+    margin-right: 10px;
+  }
+  .notification .close-btn {
+    margin-left: 8px;
+  }
+}
+
+/* Landscape view for mobile */
+@media (orientation: landscape) and (max-width: 900px) {
+  .notification {
+    max-width: 70vw;
+    font-size: 0.95rem;
+    padding: 10px 8px;
+  }
+}
+
+
+
+
+
+
+
+
+
+/* 3. CSS for the Green Dot
+If you want to keep your CSS clean, you can add this to your CSS file instead of inline: */
+.chat-notif-dot {
+    background: #28a745;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 8px #28a745;
+    z-index: 10;
+}
+
+
+
+
+
+
+.admin-reply-dot {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  background: #2563eb;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px #2563eb88;
+  z-index: 3;
+  font-size: 0.95rem;
+  font-weight: bold;
+  animation: notif-pulse-blue 1.5s infinite;
+}
+
+/* .admin-dot-text {
+    font-size: 0.9em;
+    font-weight: bold;
+} */
+.admin-dot-text {
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+#adminReplyDotR {
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: notif-pulse-green 1.5s infinite;
+}
+
+@keyframes notif-pulse-blue {
+  0%, 100% { box-shadow: 0 0 8px #2563eb88; }
+  50% { box-shadow: 0 0 16px #2563ebcc, 0 0 0 8px #2563eb22; }
+} 
+@keyframes notif-pulse-green {
+  0%, 100% { box-shadow: 0 0 8px #10b98188; }
+  50% { box-shadow: 0 0 16px #10b981cc, 0 0 0 8px #10b98122; }
+} 
+
+
+
+
+
+/* Main Content */
+.live-content {
+    margin-top: 60px;
+
+}
+
+
+</style>
+</head>
+<body>
+
+
+     <!-- header  -->
+    {% block header %}
+  
+   <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+        <div class="logo">
+            {{t_site.logo|safe}}
+        </div>
+
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'homepage' %}">Home</a></li>
+                
+                
+                <li><a href="{% url 'education' %}">Education</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <div class="hamburger"></div>
+            </button>
+             
+             <a href="{% url 'dashboard' %}" class="back-btn "><i class="fas fa-arrow-left"></i> 📈</a>
+                 <a href="/login/" class="logout-btn cta-button" onclick="logout()">➜]</a>
+
+        </nav>
+        
+        <div class="mobile-nav-overlay" id="mobileNavOverlay">
+            <div class="mobile-nav-links">
+                <a href="{% url 'homepage' %}">Home</a>     
+                <a href="{% url 'education' %}">Education</a>
+                <a href="{% url 'support' %}">Support</a>
+                
+             
+                 <a href="/login/" class="logout-btn " onclick="logout()">Logout</a>
+
+            </div>
+        </div>
+    </header>
+
+
+
+
+
+
+    {% endblock header %}
+
+
+
+
+
+
+
+
+
+
+    <!-- Main Content -->
+    {% block content %}
+  <main class="live-content">
+
+    <div class="chat-container">
+        <div class="chat-header">
+          {% comment %} <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Dashboard</a> {% endcomment %}
+          <span class="chat-title">Live Chat with Admin  </span>  
+          </span>
+          
+
+<a class="floating-action-btn" id="liveChatBtn" title="Chat Admin" href="{% url 'user_chat' %}" style="position:relative; text-decoration: none;">
+    <i class="fas fa-comments"></i>
+    {% comment %} <span class="admin-reply-dot" id="adminReplyDotA"><span class="admin-dot-text">A</span></span>
+    <span class="admin-reply-dot" id="adminReplyDotR" style="display:none; background: #10b981; box-shadow: 0 0 8px #10b981;"><span class="admin-dot-text">R</span></span> {% endcomment %}
+    <span class="admin-reply-dot" id="adminReplyDotA"><span class="admin-dot-text"></span></span>
+    <span class="admin-reply-dot" id="adminReplyDotR" style="display:none; background: #10b981; box-shadow: 0 0 8px #10b981;"><span class="admin-dot-text"></span></span>
+</a>
+
+        </div>
+        <div class="quick-questions">
+          <button class="quick-btn" type="button" onclick="sendQuickChat('How to deposit?')">💵How to deposit?</button>
+          <button class="quick-btn" type="button" onclick="sendQuickChat('How to withdraw?')">💸How to withdraw?</button>
+          <button class="quick-btn" type="button" onclick="sendQuickChat('How long does payment take?')">🕝How long does payment take?</button>
+        </div>
+        <div class="chat-messages" id="chatMessages" style="height:250px;overflow-y:auto;">
+           {% for msg in messages %}
+        <div class="message {% if msg.sender == 'user' %}user{% else %}admin{% endif %}">
+            <b>{% if msg.sender == 'user' %}You{% elif msg.sender == 'admin' %} Admin {% else %} Quick Message {% endif %}:</b>
+            {% if msg.message %}{{ msg.message }}<br>{% endif %}
+            {% if msg.file %}
+                {% if msg.is_image %}
+                    <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+                {% else %}
+                    <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+                {% endif %}
+            {% endif %}
+            <small style="color: blanchedalmond;font-weight: 600;">⏲&nbsp;{{ msg.timestamp|date:"m-d-y H:i" }}</small>
+        </div>
+        {% empty %}
+            <p>No messages yet.</p>
+        {% endfor %}    
+      </div>
+
+          
+      {% comment %} 
+      a. Add AJAX Send for Chat Form
+      Replace your chat form submit with AJAX:
+      {% endcomment %}
+      <form id="chatForm" class="chat-input-group" method="post" enctype="multipart/form-data" action="{% url 'user_chat' %}">
+          {% csrf_token %}
+          <input type="text" name="message" id="chatInput" class="chat-input" placeholder="Type your message...">
+          <label class="attach-button" title="Attach file">
+              <i class="fas fa-paperclip"></i>
+              <input type="file" name="file" id="chatAttachment" style="display:none;" onchange="showFileName(event)">
+          </label>
+          <button type="submit" class="send-button"><i class="fas fa-paper-plane"></i></button>
+      </form>
+            <div id="fileName" style="font-size:0.9em;color:whitesmoke;margin-top:4px;">Selected Document  will appear here</div>
+              </form>
+            </div>
+</main>
+    {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    {% block footer %} 
+    
+      {% include 'footer.html' %}
+    {% endblock footer %}
+
+ 
+
+
+
+
+
+    
+
+      <!-- Blue admin reply dot -->
+      <span class="admin-reply-dot" id="adminReplyDot"><span class="admin-dot-text">A</span></span>
+
+    <script src="{% static '' %}js/dashboard.js"> </script>
+    <script src="{% static '' %}js/livechat.js"></script>
+  
+     
+
+{% comment %} 
+a. Add AJAX Send for Chat Form
+Replace your chat form submit with AJAX:
+{% endcomment %}
+
+<script>
+  // CSRF helper for AJAX
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+// AJAX submit for chat
+$('#chatForm').on('submit', function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+    $.ajax({
+        url: "{% url 'user_chat' %}",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        headers: {'X-CSRFToken': csrftoken},
+        success: function(data) {
+            $('#chatInput').val('');
+            $('#chatAttachment').val('');
+            $('#fileName').text('Selected Document will appear here');
+            loadMessages(); // reload messages after sending
+        }
+    });
+});
+</script>
+
+{% comment %} 
+b. AJAX Polling for New Messages
+Add a function to fetch messages every few seconds: 
+{% endcomment %}
+<script>
+function loadMessages() {
+    $.get("{% url 'user_chat' %}?ajax=1", function(data) {
+        $('#chatMessages').html(data);
+        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+    });
+}
+
+// Poll every 2 seconds
+setInterval(loadMessages, 2000);
+loadMessages(); // initial load
+</script>
+
+
+
+
+<script>
+  function loadUserMessages() {
+    $.get("{% url 'user_chat' %}?ajax=1", function(data) {
+        $('#chatMessages').html(data);
+        $('#chatMessages').scrollTop($('#chatMessages')[0].scrollHeight);
+    });
+}
+setInterval(loadUserMessages, 2000);
+loadUserMessages();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
+</script>
+
+
+
+
+
+
+{% comment %} implement real-time notification for the green dot on the live chat button 
+2. Frontend: AJAX Polling on Dashboard
+In your dashboard template (where the chat button is), add this JavaScript: {% endcomment %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  function pollUnreadAdminMessages() {
+    $.get("{% url 'check_unread_admin_messages' %}", function(data) {
+        if (data.has_unread) {
+            // Show "R", hide "A"
+            $('#adminReplyDotA').hide();
+            $('#adminReplyDotR').show();
+        } else {
+            // Show "A", hide "R"
+            $('#adminReplyDotA').show();
+            $('#adminReplyDotR').hide();
+        }
+    });
+}
+
+// Poll every 2 seconds
+setInterval(pollUnreadAdminMessages, 2000);
+pollUnreadAdminMessages(); // Initial check
+</script>
+
+
+  
+</body>
+</html>

@@ -1,0 +1,37 @@
+ {% for msg in messages %}
+            
+    {% if msg.sender == 'user' %}
+        <div class="message user">
+        {% if msg.message %}{{ msg.message }}<br>{% endif %}
+
+        {% if msg.file %}
+            {% if msg.is_image %}
+                <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+            {% else %}
+                <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+            {% endif %}
+        {% endif %}
+            <div class="message-time">{{ msg.timestamp|date:"Y-m-d H:i" }}</div>
+        </div>
+
+
+    {% elif  msg.sender == 'admin' %}
+        <div class="message admin">
+        {% if msg.message %}{{ msg.message }}<br>{% endif %}
+
+        {% if msg.file %}
+            {% if msg.is_image %}
+                <img src="{{ msg.file.url }}" style="max-width:120px;max-height:120px;display:block;margin:5px 0;">
+            {% else %}
+                <a href="{{ msg.file.url }}" target="_blank">Download attachment</a>
+            {% endif %}
+        {% endif %}
+            <div class="message-time">{{ msg.timestamp|date:"Y-m-d H:i" }}</div>
+        </div>
+    
+    {% endif %}
+
+
+{% empty %}
+    <p>No messages yet.</p>
+{% endfor %}

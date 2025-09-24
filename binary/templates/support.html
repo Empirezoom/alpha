@@ -1,0 +1,88 @@
+{% extends 'base_s.html' %}
+{% load static %}
+{% block header %} {% include 'header1.html' %} {% endblock header %}
+
+{% block content %}
+
+
+  
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Support Hero Section -->
+        <section class="support-hero">
+            <h1>Customer Support</h1>
+            <p>We're here to help you succeed. Get expert assistance 24/7 from our dedicated support team.</p>
+        </section>
+
+        <!-- Support Options -->
+        <section class="support-content">
+            <div class="support-card">
+                <span class="support-icon">💬</span>
+                <h3>Live Chat</h3>
+                <p>Get instant help from our support agents. Available 24/7 for all your trading questions and technical issues.</p>
+                <a href="{% url 'login' %}" class="support-button" onclick="openLiveChat()">Start Live Chat</a>
+            </div>
+
+            <div class="support-card">
+                <span class="support-icon">📧</span>
+                <h3>Email Support</h3>
+                <p>Send us detailed questions and we'll respond within 2 hours. Perfect for complex account or trading inquiries.</p>
+                <a href="mailto:{{t_site.email}}" class="support-button">Send Email</a>
+            </div>
+
+            <div class="support-card">
+                <span class="support-icon">📞</span>
+                <h3>Phone Support</h3>
+                <p>Speak directly with our expert support team. Call us for urgent issues or personalized assistance.</p>
+                <a href="https://t.me/+aKIPBQWeXh4yNmZk" class="support-button">Call Now</a>
+            </div>
+
+            <div class="support-card">
+                <span class="support-icon">📚</span>
+                <h3>Help Center</h3>
+                <p>Browse our comprehensive knowledge base with tutorials, FAQs, and step-by-step guides.</p>
+                <a href="https://t.me/+aKIPBQWeXh4yNmZk" class="support-button">Visit Help Center</a>
+            </div>
+        </section>
+
+        <!-- Contact Form -->
+        <section class="contact-form">
+            <h2 style="color: #00d4ff; margin-bottom: 1.5rem; text-align: center;">Contact Us</h2>
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a topic</option>
+                        <option value="account">Account Issues</option>
+                        <option value="trading">Trading Questions</option>
+                        <option value="technical">Technical Support</option>
+                        <option value="billing">Billing & Payments</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Please describe your issue or question in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+ 
+    
+{% endblock content %}
+    
+{% block footer %} {% include 'footer.html' %} {% endblock footer %}
