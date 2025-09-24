@@ -12,9 +12,9 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="#trading">Trading</a></li>
             <li><a href="#features">Features</a></li>
-            <li><a href="education.html">Education</a></li>
-            <li><a href="#support">Support</a></li>
-            <li><a href="login.html">Login</a></li> </ul>
+            <li><a href="{% url 'education' %}">Education</a></li>
+            <li><a href="{% url 'support' %}">Support</a></li>
+            <li><a href="/login/">Login</a></li> </ul>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <div class="hamburger"></div>
         </button>
@@ -27,9 +27,9 @@
             <a href="index.html">Home</a>
             <a href="#trading">Trading</a>
             <a href="#features">Features</a>
-            <a href="#education">Education</a>
-            <a href="#support">Support</a>
-            <a href="login.html">Login</a>
+            <a href="{% url 'education' %}">Education</a>
+            <a href="{% url 'support' %}">Support</a>
+            <a href="/login/">Login</a>
             {% comment %} <a href="#" class="cta-button" id="mobileProfileBtn">My Profile</a> {% endcomment %}
              <a href="/login/" class="logout-btn" onclick="logout()">Logout</a>
         </div>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - AlphaTrade Pro</title>
+  {% load static %}
+  
+            <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg"> 
+    {% comment %} <link rel="icon" type="image/png" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest"> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static '' %}css/admin.css">  {% endcomment %}
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(ellipse at center, #1a2332 0%, #0f1b2e 45%, #0c1426 100%);
+      overflow: hidden;
+      position: relative;
+      color: #fff;
+    }
+    /* Animated Grid */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 18s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes gridMove {
+      0% { transform: translate(0, 0);}
+      100% { transform: translate(40px, 40px);}
+    }
+    /* Animated Particles */
+    .particle {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(1px);
+      animation: particleFloat 12s linear infinite;
+    }
+    .particle:nth-child(1) { left: 10%; animation-delay: 0s; background: #00d4ff; }
+    .particle:nth-child(2) { left: 20%; animation-delay: 2s; background: #1e40af; }
+    .particle:nth-child(3) { left: 30%; animation-delay: 4s; background: #00d4ff; }
+    .particle:nth-child(4) { left: 40%; animation-delay: 1s; background: #1e40af; }
+    .particle:nth-child(5) { left: 50%; animation-delay: 3s; background: #00d4ff; }
+    .particle:nth-child(6) { left: 60%; animation-delay: 5s; background: #1e40af; }
+    .particle:nth-child(7) { left: 70%; animation-delay: 2.5s; background: #00d4ff; }
+    .particle:nth-child(8) { left: 80%; animation-delay: 1.5s; background: #1e40af; }
+    .particle:nth-child(9) { left: 90%; animation-delay: 3.5s; background: #00d4ff; }
+    @keyframes particleFloat {
+      0% { top: 110vh; opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% { top: -10vh; opacity: 0; }
+    }
+    /* Floating Logo Animation */
+    .login-logo {
+      font-family: 'Orbitron', 'Segoe UI', sans-serif;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #00d4ff, #1e40af, #00d4ff 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      animation: floatLogo 3.5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 2px 12px #00d4ff44);
+    }
+    @keyframes floatLogo {
+      0% { transform: translateY(0);}
+      100% { transform: translateY(-18px);}
+    }
+    /* Glassmorphism Login Card */
+    .login-container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(20, 30, 50, 0.85);
+      border-radius: 24px;
+      box-shadow: 0 8px 40px 0 #00d4ff33, 0 1.5px 0 #1e40af44;
+      padding: 2.5rem 2.2rem 2rem 2.2rem;
+      width: 100%;
+      max-width: 370px;
+      z-index: 2;
+      backdrop-filter: blur(16px);
+      border: 2px solid rgba(0, 212, 255, 0.18);
+      animation: popIn 1.2s cubic-bezier(.23,1.12,.32,1) 0.2s both;
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: translate(-50%, -60%) scale(0.9);}
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1);}
+    }
+    .login-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #00d4ff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #00d4ff22;
+    }
+    .login-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #b6eaff;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .login-form input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      background: rgba(0, 212, 255, 0.08);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 1px 0 #00d4ff22;
+    }
+    .login-form input:focus {
+      box-shadow: 0 0 0 2px #00d4ff88;
+      background: rgba(0, 212, 255, 0.13);
+    }
+    .login-form button {
+      width: 100%;
+      padding: 0.9rem 0;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(90deg, #00d4ff, #1e40af 80%);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      box-shadow: 0 4px 24px #00d4ff33;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 0.5rem;
+    }
+    .login-form button:hover {
+      background: linear-gradient(90deg, #1e40af, #00d4ff 80%);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 32px #00d4ff55;
+    }
+    .login-form .forgot-link {
+      display: block;
+      margin-top: 1rem;
+      text-align: right;
+      color: #b6eaff;
+      font-size: 0.95rem;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: color 0.2s;
+    }
+    .login-form .forgot-link:hover {
+      color: #fff;
+      opacity: 1;
+      text-decoration: underline;
+    }
+    /* Error message */
+    .login-error {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      border-radius: 8px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      display: none;
+    }
+    /* Responsive */
+    @media (max-width: 500px) {
+      .login-container { padding: 1.5rem 0.7rem; max-width: 98vw;}
+      .login-logo { font-size: 1.5rem;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Particles -->
+  <div class="particle" style="animation-duration: 13s;"></div>
+  <div class="particle" style="animation-duration: 11s;"></div>
+  <div class="particle" style="animation-duration: 15s;"></div>
+  <div class="particle" style="animation-duration: 12s;"></div>
+  <div class="particle" style="animation-duration: 14s;"></div>
+  <div class="particle" style="animation-duration: 10s;"></div>
+  <div class="particle" style="animation-duration: 16s;"></div>
+  <div class="particle" style="animation-duration: 12.5s;"></div>
+  <div class="particle" style="animation-duration: 13.5s;"></div>
+
+  <!-- Login Card -->
+  <div class="login-container">
+    <div class="login-logo">AlpicapFx Pro</div>
+    <div class="login-title">Admin Dashboard Login</div>
+    {% comment %} <form class="login-form" autocomplete="off" onsubmit="return handleLogin(event)">
+      <div class="login-error" id="loginError">Invalid credentials. Please try again.</div>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter admin username" required autofocus>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter password" required>
+      <button type="submit">Login</button>
+      <a href="#" class="forgot-link">Forgot password?</a>
+    </form> {% endcomment %}
+    <form method="post" class="login-form" autocomplete="off">
+  {% csrf_token %}
+  {% if error %}
+    <div class="login-error">{{ error }}</div>
+  {% endif %}
+  <label for="username">Username</label>
+  <input type="text" id="username" name="username" placeholder="Enter admin username" required autofocus>
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" placeholder="Enter password" required>
+  <button type="submit">Login</button>
+  <a href="#" class="forgot-link">Forgot password?</a>
+</form>
+  </div>
+  <script>
+    // Animate particles with random vertical start
+    document.querySelectorAll('.particle').forEach((p, i) => {
+      p.style.top = Math.random() * 80 + 5 + 'vh';
+    });
+
+   
+    
+  </script>
+</body>
+</html>

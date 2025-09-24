@@ -785,13 +785,22 @@ def check_new_requests_api(request):
 
 
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.urls import reverse
 
-
-
-
-
-
-
+def custom_admin_login(request):
+    error = None
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_superuser:
+            login(request, user)
+            return redirect(reverse('admin_chat_users'))
+        else:
+            error = "Invalid credentials or not an admin user."
+    return render(request, 'admin_login.html', {'error': error})
 
 
 

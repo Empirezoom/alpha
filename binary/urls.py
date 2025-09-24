@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 
+from .views import custom_admin_login
+
 
 
 
@@ -74,7 +76,7 @@ urlpatterns = [
     path('admin/transactions/', views.transaction_list, name='transaction_list'),
     path('api/check-new-requests/', views.check_new_requests_api, name='check_new_requests_api'),
 
-    
+     path('admin-login/', custom_admin_login, name='admin_login'),
 
 
 
