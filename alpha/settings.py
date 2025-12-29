@@ -30,7 +30,15 @@ SECRET_KEY = 'django-insecure-m_ij2i(=-x&0m5^)+qie_kl+*!cup(b8+8oda3hdurh!zuopoi
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+# ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'bluestick.onrender.com', 
+    'www.bluestick.online',    
+    'bluestick.online',       
+]
+
 
 # Application definition
 

@@ -1,13 +1,14 @@
 {
-    "cSpell.words": [
-        "Alpicap",
-        "django",
-        "elif",
-        "livechat",
-        "notif",
-        "onclick",
-        "pycache",
-        "Venmo",
-        "Zelle"
-    ]
+  "cSpell.words": [
+    "Alpicap",
+    "asgi",
+    "django",
+    "elif",
+    "livechat",
+    "notif",
+    "onclick",
+    "pycache",
+    "Venmo",
+    "Zelle"
+  ]
 }
