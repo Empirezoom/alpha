@@ -13,6 +13,7 @@
             <li><a href="{% url 'homepage' %}">Home</a></li>
             <li><a href="{% url 'education' %}">Education</a></li>
             <li><a href="{% url 'support' %}">Support</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
             {% comment %} <li><a href="">Demo🎬</a></li> {% endcomment %}
         </ul>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -24,9 +25,10 @@
     <!-- Mobile Navigation Overlay -->
     <div class="mobile-nav-overlay" id="mobileNavOverlay">
         <div class="mobile-nav-links">
-            <a href="{% url 'homepage' %}">home</a>
+            <a href="{% url 'homepage' %}">Home</a>
             <a href="{% url 'education' %}">Education</a>
             <a href="{% url 'support' %}">Support</a>
+            <a href="{% url 'about' %}">About Us</a>
             {% comment %} <a href="#features">Demo🎬</a> {% endcomment %}
             <a href="{% url 'login' %}" class="cta-button">Login</a>
         </div>

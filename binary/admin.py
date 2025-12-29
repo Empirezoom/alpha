@@ -26,6 +26,10 @@ class EducationAdmin(admin.ModelAdmin):
     list_display = ['id','img_title','text','link']
 
 
+class BrokersAdmin(admin.ModelAdmin):
+    list_display = ['id','name','rank','availability']
+
+
 
 
 
@@ -51,4 +55,5 @@ admin.site.register(CompanyProfile,CompanyProfileAdmin)
 admin.site.register(Feature,FeatureAdmin) 
 admin.site.register(Stat,StatAdmin) 
 admin.site.register(Education,EducationAdmin) 
+admin.site.register(Brokers,BrokersAdmin) 
 

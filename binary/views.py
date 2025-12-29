@@ -803,7 +803,20 @@ def custom_admin_login(request):
     return render(request, 'admin_login.html', {'error': error})
 
 
+from . models import Brokers
 
+def about(request):
+
+    brk = Brokers.objects.all()
+   
+
+    context = {
+        'brk':brk,
+       
+
+    }
+
+    return render(request, 'about-test.html', context)
 
 
 # def logout_view(request):
@@ -812,3 +825,49 @@ def custom_admin_login(request):
 #         request.session.flush()  # Clear all session data
 #         return redirect('login')
 #     return redirect('login')
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core.mail import send_mail
+from django.contrib import messages
+from userprofile.models import UserRegistration
+from .models import PasswordResetToken
+from django.contrib.auth.hashers import make_password  # For hashing passwords
+
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = UserRegistration.objects.get(email=email)
+            token = PasswordResetToken.objects.create(user=user)
+            reset_url = request.build_absolute_uri(f'/reset-password/{token.token}/')
+            send_mail(
+                'Password Reset',
+                f'Click here to reset your password: {reset_url}',
+                'blue.stick@yahoo.com',
+                [email],
+                fail_silently=True,  # Changed to True to suppress errors
+            )
+            messages.success(request, 'Reset link sent to your email.')
+            return redirect('login')
+        except UserRegistration.DoesNotExist:
+            messages.error(request, 'Email not found.')
+    return render(request, 'forgot_password.html')
+
+def reset_password(request, token):
+    reset_token = get_object_or_404(PasswordResetToken, token=token)
+    if reset_token.is_expired():
+        messages.error(request, 'Token expired.')
+        return redirect('login')
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        if password == confirm_password:
+            reset_token.user.password = make_password(password)  # Hash the password
+            reset_token.user.save()
+            reset_token.delete()  # Clean up token
+            messages.success(request, 'Password reset successfully.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Passwords do not match.')
+    return render(request, 'reset_password.html')

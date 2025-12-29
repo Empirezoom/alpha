@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Bluestick Copy Trading Platform</title>
+    <meta name="description" content="Learn about Bluestick, a pioneering copy trading platform based in California, USA. Discover our mission, features, security, and what sets us apart." />
+
+    <!-- SVG favicon for modern browsers -->
+    <link rel="icon" type="image/svg+xml" href="{% static '' %}svg/fav.svg" />
+
+    <!-- PNG fallback for older browsers -->
+    <!-- <link rel="icon" type="image/png" href="/favicon-32x32.png"> -->
+
+    <!-- Apple Touch Icon -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"> -->
+
+    <!-- Manifest for web app -->
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+
+    <link rel="stylesheet" href="{% static '' %}css/about.css" />
+    <link rel="stylesheet" href="{% static '' %}css/h&f.css" />
+  </head>
+
+  <body>
+    <div id="loader">
+      <div class="logo-loader">
+        <img src="{% static '' %}svg/fav copy.svg" alt="AlpicapFX Logo" width="80" />
+      </div>
+    </div>
+
+    {% block header %}
+      {% include 'header1.html' %}
+    {% endblock %}
+
+    <main>
+      <div class="about-container" id="top">
+        <h1>About Us: Bluestick Copy Trading Platform</h1>
+        <p>
+          Welcome to <strong>Bluestick</strong>, a pioneering copy trading platform proudly based in California, USA. Our mission is to bridge the gap between skilled forex traders and individuals eager to tap into the wealth of knowledge and expertise available in the trading community. By leveraging our innovative platform, users can effortlessly replicate successful trading strategies directly in their own brokerage accounts.
+        </p>
+        <div class="about-highlight">This unique model of social trading has gained immense popularity worldwide, being utilized by top-tier platforms like eToro and ZuluTrade. We are thrilled to be a part of this rapidly evolving financial landscape.</div>
+
+        <!-- Platform Features -->
+        <section class="about-section" id="features">
+          <h2>What Our Platform Does</h2>
+          <div class="about-features">
+            <div class="about-feature-card">
+              <div class="about-feature-icon">👤</div>
+              <div class="about-feature-title">Profile Browsing</div>
+              <div class="about-feature-desc">Explore successful traders' profiles with verified track records, win rates, and trading statistics.</div>
+            </div>
+            <div class="about-feature-card">
+              <div class="about-feature-icon">🔄</div>
+              <div class="about-feature-title">Automatic Trade Copying</div>
+              <div class="about-feature-desc">Set your account to automatically copy trades from experienced professionals.</div>
+            </div>
+            <div class="about-feature-card">
+              <div class="about-feature-icon">🏦</div>
+              <div class="about-feature-title">Regulated Brokers</div>
+              <div class="about-feature-desc">All trades are executed through legitimate, regulated forex brokers for your security.</div>
+            </div>
+            <div class="about-feature-card">
+              <div class="about-feature-icon">📚</div>
+              <div class="about-feature-title">Risk Management & Education</div>
+              <div class="about-feature-desc">Access risk management tools and educational resources to make informed trading decisions.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- What Sets Us Apart -->
+        <section class="about-section" id="why-not-scam">
+          <h2>Why We Are NOT Phishing or Fraudulent</h2>
+          <ol>
+            <li>
+              <strong>Legitimate Business Model:</strong> Copy trading is a regulated investment method. We connect traders and users, but never directly handle users’ funds.
+            </li>
+            <li>
+              <strong>No Credential Harvesting:</strong> We never collect sensitive credentials. Connections are made via secure broker APIs.
+            </li>
+            <li>
+              <strong>Transparent Operations:</strong> Clear terms, verified trader data, and full disclosure on how our platform works.
+            </li>
+            <li>
+              <strong>Regulatory Compliance:</strong> We display risk warnings, follow advertising standards, and never guarantee profits.
+            </li>
+            <li>
+              <strong>Established User Base:</strong> Our growing community and positive reviews reflect our legitimacy.
+            </li>
+          </ol>
+        </section>
+
+        <section class="about-section" id="apart">
+          <h2>What Sets Us Apart from Scams</h2>
+          <ul>
+            <li>
+              <span class="about-list-check">✔</span>We never promise guaranteed returns or use pressure tactics.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span>Contact information and support are always accessible.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span>We provide verifiable performance data and a transparent fee structure.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span>Education is at the core of our platform.
+            </li>
+          </ul>
+        </section>
+
+        <section class="about-section" id="risk">
+          <h2>Risk Disclosures We Provide</h2>
+          <div class="about-risk">Forex trading involves substantial risk of loss. Past performance does not guarantee future results. Only invest what you can afford to lose. Copy trading adds additional risks as you rely on another trader’s decisions.</div>
+        </section>
+
+        <section class="about-section" id="security">
+          <h2>Technical Security</h2>
+          <ul>
+            <li>
+              <span class="about-list-check">✔</span><strong>SSL Encryption:</strong> All data transmissions are encrypted.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span><strong>Secure Authentication:</strong> Only authorized users can access their accounts.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span><strong>No Sensitive Data Storage:</strong> We do not store financial credentials.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span><strong>Regular Security Audits:</strong> We proactively identify and fix vulnerabilities.
+            </li>
+          </ul>
+        </section>
+
+        <section class="about-section" id="review">
+          <h2>Request for Review</h2>
+          <p>We invite manual review of our website and operations. We are happy to provide business registration documents, broker partnership evidence, user testimonials, and proof of regulatory compliance.</p>
+        </section>
+
+        <section class="about-section" id="special">
+          <h2>What Makes Bluestick Special?</h2>
+          <div class="about-bonus">🎁 Every new user receives a $5 bonus upon registration!</div>
+          <ul>
+            <li>
+              <span class="about-list-check">✔</span>Safe and secure withdrawals for peace of mind.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span>Cutting-edge AI monitors trades for Telegram subscribers, offering smart insights and analysis.
+            </li>
+            <li>
+              <span class="about-list-check">✔</span>Supportive, user-friendly environment for all community members.
+            </li>
+          </ul>
+        </section>
+
+        <!-- Meet the Team Section -->
+        <section class="about-section" id="team">
+          <h2>Meet the Team</h2>
+          <div class="team-grid">
+            {% for item in brk %}
+              <div class="team-member fancy-card">
+                <div class="team-photo-wrap">
+                  <img src="{{ item.profile.url }}" alt="{{ item.name }}" class="team-photo" />
+                </div>
+
+                <h3>{{ item.name|title }}</h3>
+                <p class="team-role">{{ item.rank|upper }}</p>
+                <p>{{ item.about }}</p>
+
+                {% if item.availability %}
+                  <div class="team-socials">
+                    <a href="{{ item.telegram_link }}" target="_blank" title="Telegram"><img src="{% static 'images/telegram.png' %}" alt="Telegram" /></a>
+                    <a href="{{ item.facebook_link }}" target="_blank" title="Facebook"><img src="{% static 'images/facebook.jpeg' %}" alt="Facebook" /></a>
+                    <a href="{{ item.instagram_link }}" target="_blank" title="Instagram"><img src="{% static 'images/instagram.jpeg' %}" alt="Instagram" /></a>
+                  </div>
+                {% endif %}
+                <div class="team-connect">Connect for free trend signals!</div>
+              </div>
+            {% endfor %}
+
+           
+          </div>
+        </section>
+
+        <!-- User Testimonials Section -->
+        <section class="about-section" id="testimonials">
+          <div class="team-photo-wrap" style="background-color: #00d4ff33;">
+            <h2 style="color: white;">User's Testimonials</h2>
+            <img src="{% static '' %}images/avatar.png" alt="default user pics" class="testimonial-photo" />
+          </div>
+
+          <div class="testimonials-grid" id="testimonial-carousel">
+            <div class="testimonial active">
+              <img src="{% static '' %}images/user1.jpg" alt="Emily R." class="testimonial-photo" />
+              <p>“Bluestick made copy trading easy and transparent. I’ve learned so much from the pro traders!”</p>
+              <div class="testimonial-user">– Emily R.</div>
+            </div>
+            <div class="testimonial">
+              <img src="{% static '' %}images/user2.jpg" alt="Michael T." class="testimonial-photo" />
+              <p>“The team is always available for support and the signals are spot on. Highly recommended!”</p>
+              <div class="testimonial-user">– Michael T.</div>
+            </div>
+            <div class="testimonial">
+              <img src="{% static '' %}images/user3.jpg" alt="Aisha K." class="testimonial-photo" />
+              <p>“I love the educational resources and the secure withdrawals. Bluestick is the real deal.”</p>
+              <div class="testimonial-user">– Amanda K.</div>
+            </div>
+            <div class="testimonial">
+              <img src="{% static '' %}images/user4.jpg" alt="Samuel O." class="testimonial-photo" />
+              <p>“Bluestick’s pro traders helped me double my confidence in trading!”</p>
+              <div class="testimonial-user">– Samuel O.</div>
+            </div>
+            <div class="testimonial">
+              <img src="{% static '' %}images/user5.jpg" alt="Linda W." class="testimonial-photo" />
+              <p>“The AI signals on Telegram are a game-changer. My trades have improved significantly!”</p>
+              <div class="testimonial-user">– Linda W.</div>
+            </div>
+            <div class="testimonial">
+              <img src="{% static '' %}images/user6.jpg" alt="Carlos M." class="testimonial-photo" />
+              <p>“Fantastic platform with real results. The team’s support is top-notch!”</p>
+              <div class="testimonial-user">– Emmanuel M.</div>
+            </div>
+          </div>
+          <div class="testimonial-nav" id="testimonial-nav"></div>
+        </section>
+
+        <!-- Company Timeline Section -->
+        <section class="about-section" id="timeline">
+          <h2>Our Journey</h2>
+          <div class="timeline">
+            <div class="timeline-event">
+              <div class="timeline-date">2021</div>
+              <div class="timeline-content">Bluestick founded in California, USA.</div>
+            </div>
+            <div class="timeline-event">
+              <div class="timeline-date">2022</div>
+              <div class="timeline-content">Launched our copy trading platform and onboarded first 1,000 users.</div>
+            </div>
+            <div class="timeline-event">
+              <div class="timeline-date">2023</div>
+              <div class="timeline-content">Partnered with regulated brokers and introduced AI-powered trade monitoring.</div>
+            </div>
+            <div class="timeline-event">
+              <div class="timeline-date">2024</div>
+              <div class="timeline-content">Reached 10,000+ users and expanded our pro trader network globally.</div>
+            </div>
+            <div class="timeline-event">
+              <div class="timeline-date">2025</div>
+              <div class="timeline-content">Launched Telegram channel for real-time signals and insights.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PDF Download Button -->
+        <section class="about-section" style="text-align: center">
+          <button class="pdf-btn" onclick="window.open('{{ t_site.terms.url }}')">📄 Download Our Company Profile (PDF)</button>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    {% block footer %}
+      {% include 'footer.html' %}
+    {% endblock %}
+
+    <!-- Back to Top Button -->
+    <button id="backToTopBtn" aria-label="Back to top">↑</button>
+
+    <script src="{% static '' %}js/about.js"></script>
+  </body>
+</html>

@@ -10,12 +10,14 @@
             {{t_site.logo|safe}}
         </div>
 
+
         
         <ul class="nav-links">
             <li><a href="#trading">Trading</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="{% url 'education' %}">Education</a></li>
             <li><a href="{% url 'support' %}">Support</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
         </ul>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <div class="hamburger"></div>
@@ -30,6 +32,7 @@
             <a href="#features">Features</a>
             <a href="{% url 'education' %}">Education</a>
             <a href="{% url 'support' %}">Support</a>
+            <a href="{% url 'about' %}">About Us</a>
             <a href="{% url 'register' %}" class="cta-button">Start Trading</a>
         </div>
     </div>

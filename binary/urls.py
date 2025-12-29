@@ -79,9 +79,8 @@ urlpatterns = [
      path('admin-login/', custom_admin_login, name='admin_login'),
 
 
+    path('about/', views.about, name='about'),
 
-
-
-
-
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+    path('reset-password/<uuid:token>/', views.reset_password, name='reset_password'),
 ]

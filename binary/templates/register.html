@@ -20,6 +20,7 @@
             <li><a href="{% url 'homepage' %}">Home</a></li>
             <li><a href="{% url 'education' %}">Education</a></li>
             <li><a href="{% url 'support' %}">Support</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
                 
             </ul>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -31,11 +32,10 @@
         <!-- Mobile Navigation Overlay -->
         <div class="mobile-nav-overlay" id="mobileNavOverlay">
             <div class="mobile-nav-links">
-                <a href="index.html">Home</a>
-                <a href="#trading">Trading</a>
-                <a href="#features">Features</a>
-                <a href="#education">Education</a>
-                <a href="#support">Support</a>
+                <a href="{% url 'homepage' %}">Home</a>
+                <a href="{% url 'education' %}">Education</a>
+                <a href="{% url 'support' %}">Support</a>
+                <a href="{% url 'about' %}">About Us</a>
                 <a href="/login/" class="cta-button">Sign In</a>
             </div>
         </div>
@@ -124,14 +124,14 @@
                 <div class="terms-group">
                     <input type="checkbox" id="terms" name="terms" required>
                     <label for="terms">
-                        I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.
-                    </label>
+                        I agree to the <a href="{{t_site.terms.url}}" download>Terms of Service</a> and <a href="{% url 'about' %}" >Privacy Policy</a>.
+                    </label> 
                 </div>
                 <div class="terms-group">
                     <input type="checkbox" id="marketing" name="marketing">
                     <label for="marketing">
                         I want to receive trading insights and market updates via email
-                    </label>
+                    </label> 
                 </div>
                 <button type="submit" class="signup-button" id="submitBtn">Create Account & Get $5 Bonus</button>
                 <div class="success-message" id="successMessage" style="display:none;color:#10b981;font-size:0.95rem;margin-top:1rem;"></div>
