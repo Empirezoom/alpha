@@ -149,6 +149,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+# Add this at the end of the file
+ASGI_APPLICATION = 'core.asgi.application'
 
 
 
@@ -192,5 +194,3 @@ CHANNEL_LAYERS = {
 # LOGOUT_REDIRECT_URL = '/login/'
 
 
-# Add this at the end of the file
-ASGI_APPLICATION = 'core.asgi.application'
