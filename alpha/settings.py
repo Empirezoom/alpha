@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'bluestick.onrender.com', 
+    'bluestick-trading.onrender.com', 
     # 'www.bluestick.online',    
     'bluestick.online',       
 ]
