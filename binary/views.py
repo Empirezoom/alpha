@@ -5,6 +5,7 @@ from django.contrib import messages
 
 
 
+
 # views.py
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -410,6 +411,9 @@ def dashboard_view(request):
     user = get_current_user(request)
     # Check for unread admin messages
     has_unread_admin_msg = ChatMessage.objects.filter(user=user, sender='admin', is_read=False).exists()
+
+
+
     
 
     context = {
@@ -424,7 +428,8 @@ def dashboard_view(request):
         # 'notification': notification, # session 
         'notifications': notifications,
         'transactions': transactions,
-        'has_unread_admin_msg': has_unread_admin_msg
+        'has_unread_admin_msg': has_unread_admin_msg,
+       
 
 
 
